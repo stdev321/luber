@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     },
     shadowProps: {
         shadowColor: '#000',
-        shadowOffset: { height: 60, width: 100 },
+        shadowOffset: { height: 2, width: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 0,
     }
