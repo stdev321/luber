@@ -4,17 +4,23 @@ export const styles = StyleSheet.create({
     container: {
         width: "100%",
         height: "100%",
-        backgroundColor: "#454545",
+        // backgroundColor: "#454545",
     },
     subContainer: {
-        marginTop: 100,
-        justifyContent: "center",
-        alignItems: "center"
+        marginTop: 50,
+        padding:25,
+        // justifyContent: "center",
+        // alignItems: "center"
     },
-    textLabel: {
-        fontSize: 20,
-        margin: 20,
-        color: "#fff",
+    text: {
+        fontSize: 25,
+        marginBottom:10,
+        fontWeight: '600'
+        // color: "#fff",
+    },
+    subText: {
+        fontSize: 17,
+        color: "#636363",
     },
     input: {
         width: "90%",
@@ -42,15 +48,10 @@ export const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 24
     },
-    terms: {
-        color: "#fff",
-        textAlign: "center",
-        marginTop: 100,
-    },
     shadowProps: {
         shadowColor: '#000',
-        shadowOffset: { height: 2, width: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 0,
+        // shadowOffset: { height: 60, width: 100 },
+        // shadowOpacity: 0.2,
+        // shadowRadius: 0,
     }
 });

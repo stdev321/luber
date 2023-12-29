@@ -12,32 +12,16 @@ const Login = ({ navigation}: Props) => {
         <SafeAreaView>
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
-                    <Image
-                        style={styles.shadowProps}
-                        source={require('../../../assets/favicon.png')}
-                    />
-                    <Text style={styles.textLabel}>Welcome to Luber Ride</Text>
+                    <Text style={styles.text}>Enter your Email for verification</Text>
+                    <Text style={styles.subText}>This number will be used for all ride-related communication. You shall recive an SMS with code for verification.</Text>
                     <TextInput
                         style={[styles.input, styles.shadowProps]}
                         onChangeText={() => { console.log("Demo"); }}
                         placeholder='Email'
                     />
-                    <TextInput
-                        style={[styles.input, styles.shadowProps]}
-                        onChangeText={() => { console.log("Demo"); }}
-                        placeholder="Password"
-                    />
                     <Pressable style={styles.buttonStyle} onPress={() => { navigation.navigate("Home") }} >
-                        <Text style={styles.buttonTextStyle}>Login</Text>
+                        <Text style={styles.buttonTextStyle}>Next</Text>
                     </Pressable>
-                    <Pressable onPress={() => { navigation.navigate("Register") }}>
-                        <Text style={styles.buttonTextStyle}>Create One</Text>
-                    </Pressable>
-                </View>
-                <View style={styles.terms}>
-                    <Text style={styles.terms}>
-                        Privacy | Terms
-                    </Text>
                 </View>
             </ScrollView >
         </SafeAreaView>

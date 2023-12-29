@@ -93,7 +93,7 @@ const Home = ({ navigation }: Props) => {
               }}
               placeholder="Search Pickup Location"
             />
-            <Pressable style={styles.searchProfilebutton}>
+            <Pressable style={styles.searchProfilebutton} onPress={() => {navigation.navigate("Profile")}}>
               <Image
                 style={{ width: "100%", height: "100%" }}
                 source={require("../../../assets/user.png")}
