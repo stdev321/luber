@@ -2,11 +2,13 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   userName: {
-    fontSize: 20,
+    fontSize: 24,
     marginBottom: 20,
+    marginTop: 20
   },
   profileWrapper: {
-    padding: 15,
+    padding: 20,
+    marginTop: 25
   },
   item: {
     borderBottomWidth: 1,
@@ -14,6 +16,11 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: 'center'
+  },
+  itemContent: {
+    paddingTop: 10,
+    paddingBottom: 10
   },
   logoutBtn: {
     display: "flex",
@@ -23,6 +30,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: 'center'
   },
   label: {
     fontSize: 16,
@@ -36,4 +44,7 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
   },
+  inputWrap: {
+    marginBottom: 12
+  }
 });
