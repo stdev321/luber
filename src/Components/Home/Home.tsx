@@ -171,7 +171,7 @@ const Home = ({ navigation }: Props) => {
 
         <View style={styles.bottomView}>
           <View style={{ height: 50, margin: 5 }}>
-            <Pressable style={styles.bottomViewInput}>
+            <Pressable style={styles.bottomViewInput} onPress={() => {navigation.navigate('SelectDestLocation')}}>
               <Image
                 style={{ width: 30, height: 30 }}
                 source={require("../../../assets/search.png")}
@@ -193,7 +193,7 @@ const Home = ({ navigation }: Props) => {
             </Pressable>
           </View>
           <View style={{ height: 50 }}>
-            <Pressable style={styles.recentLocation}>
+            <Pressable style={styles.recentLocation} >
               <Image
                 style={{ width: 30, height: 30 }}
                 source={require("../../../assets/locationpin.png")}
