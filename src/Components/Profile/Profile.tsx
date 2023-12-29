@@ -69,7 +69,7 @@ const Profile = ({ navigation }: Props) => {
         <Pressable>
           <Icon
             name="arrow-back"
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("Home")}
             size={22}
           />
         </Pressable>
@@ -109,7 +109,7 @@ const Profile = ({ navigation }: Props) => {
               keyExtractor={(item: any) => item.id}
             />
             <View style={styles.logoutBtn}>
-              <ButtonPrimary title="Logout" onPress={() => navigation.goBack()} />
+              <ButtonPrimary title="Logout" onPress={() => navigation.navigate("Login")} />
             </View>
           </View>
         )}
