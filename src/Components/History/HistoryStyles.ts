@@ -3,19 +3,22 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     padding: 20,
+    marginTop: 25,
   },
-  mainHeader: {
+  mainHeaderTitle: {
     fontSize: 24,
-    marginBottom: 20,
+  },
+  heading: {
+    marginTop: 20
   },
   dateTimeContainer: {
     // flex: 2,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 10
   },
   detailsContainer: {
     // flex: 5,
     flexDirection: 'row',
-    marginLeft: 10,
   },
   dateTimeText: {
     fontSize: 16,
@@ -33,4 +36,16 @@ export const styles = StyleSheet.create({
     color: "red",
     fontWeight: "bold",
   },
+  historyWrapper: {
+    borderBlockEndColor: '#D3D3D3',
+    borderBottomWidth: 1,
+    paddingBottom: 20,
+    paddingTop: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  scrollView: {
+    padding: 10
+  }
 });
