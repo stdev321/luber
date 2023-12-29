@@ -87,7 +87,7 @@ const Home = ({ navigation }: Props) => {
           >
             <Image source={require("../../../assets/menu.png")} />
           </Pressable>
-          <Pressable style={styles.searchInputBox}>
+          <Pressable style={styles.searchInputBox} onPress={() => {navigation.navigate('SelectPickLocation')}}>
             <Icon name="dot-single" style={{ color: "#3bfc2d" }} size={30} />
             <Text style={{ fontSize: 18, marginStart: 20 }}>Search Pickup</Text>
           </Pressable>
