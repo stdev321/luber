@@ -8,7 +8,7 @@ import Register from "./src/Components/Register/Register";
 import Home from "./src/Components/Home/Home";
 import Profile from "./src/Components/Profile/Profile";
 import SelectPickLocation from "./src/Components/SelectPickLocation/SelectPickLocation";
-import History from './src/Components/History/History';
+import History from "./src/Components/History/History";
 
 const Drawer = createDrawerNavigator();
 
@@ -71,14 +71,16 @@ export default function App() {
             drawerItemStyle: {
               display: "none",
             },
+            headerShown: false,
+          }}
         />
-        <Drawer.Screen 
-            name="Your Rides"
+        <Drawer.Screen
+          name="Your Rides"
           component={History}
           options={{
             headerShown: false,
           }}
-                   />
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );
