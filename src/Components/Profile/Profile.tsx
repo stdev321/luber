@@ -4,14 +4,14 @@ import {
   Button,
   Pressable,
   FlatList,
-  TextInput,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { styles } from "./ProfileStyle";
 import ButtonPrimary from "./../../Atoms/Button/ButtonPrimary";
 import TextField from "./../../Atoms/TextInput/TextField";
+import { StatusBar } from 'expo-status-bar';
 
 interface Props {
   navigation: any; // Type for navigation prop
@@ -65,7 +65,8 @@ const Profile = ({ navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <View>
+      <StatusBar />
       <View style={styles.profileWrapper}>
         <Pressable>
           <Icon
@@ -113,7 +114,7 @@ const Profile = ({ navigation }: Props) => {
           </View>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

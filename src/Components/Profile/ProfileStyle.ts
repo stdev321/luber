@@ -4,9 +4,11 @@ export const styles = StyleSheet.create({
   userName: {
     fontSize: 24,
     marginBottom: 20,
+    marginTop: 20
   },
   profileWrapper: {
     padding: 20,
+    marginTop: 25
   },
   item: {
     borderBottomWidth: 1,
@@ -28,6 +30,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: 'center'
   },
   label: {
     fontSize: 16,
