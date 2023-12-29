@@ -18,10 +18,11 @@ export default function App() {
           name="Front"
           component={Front}
           options={{
-            //   drawerItemStyle: {
-            //     display: 'none',
-            // },
+            drawerItemStyle: {
+              display: "none",
+            },
             headerShown: false,
+            drawerStyle: { width: 0, display: "none" },
           }}
         />
         <Drawer.Screen
@@ -32,6 +33,7 @@ export default function App() {
               display: "none",
             },
             headerShown: false,
+            drawerStyle: { width: 0, display: "none" },
           }}
         />
         <Drawer.Screen
@@ -42,6 +44,7 @@ export default function App() {
               display: "none",
             },
             headerShown: false,
+            drawerStyle: { width: 0, display: "none" },
           }}
         />
         <Drawer.Screen
@@ -52,7 +55,12 @@ export default function App() {
         <Drawer.Screen
           name="Profile"
           component={Profile}
-          options={{ headerShown: false }}
+          options={{
+            drawerItemStyle: {
+              display: "none",
+            },
+            headerShown: false,
+          }}
         />
       </Drawer.Navigator>
     </NavigationContainer>
