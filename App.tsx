@@ -71,6 +71,8 @@ export default function App() {
             drawerItemStyle: {
               display: "none",
             },
+            headerShown: false,
+          }}
         />
         <Drawer.Screen 
             name="Your Rides"
