@@ -1,6 +1,8 @@
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import Front from "./src/Components/Front/Front";
 import Login from "./src/Components/Login/Login";
 import Register from "./src/Components/Register/Register";
 import Home from "./src/Components/Home/Home";
@@ -12,6 +14,16 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
+        <Drawer.Screen
+          name="Front"
+          component={Front}
+          options={{
+            //   drawerItemStyle: {
+            //     display: 'none',
+            // },
+            headerShown: false,
+          }}
+        />
         <Drawer.Screen
           name="Login"
           component={Login}
