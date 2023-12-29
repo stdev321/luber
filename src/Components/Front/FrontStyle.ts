@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     // margin:'auto',
     // height: '100%',
     // alignItems:'flex-end',
-    // backgroundColor: "#454545",
+    backgroundColor: "#fff",
   },
   textLabel: {
     fontSize: 28,
@@ -46,5 +46,9 @@ export const styles = StyleSheet.create({
   },
   shadowProps: {
     shadowColor: "#000",
+  },
+  LuberText:{
+    color: '#eb7c37',
+    fontSize: 28,
   },
 });
