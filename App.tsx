@@ -7,6 +7,7 @@ import Login from "./src/Components/Login/Login";
 import Register from "./src/Components/Register/Register";
 import Home from "./src/Components/Home/Home";
 import Profile from "./src/Components/Profile/Profile";
+import SelectPickLocation from "./src/Components/SelectPickLocation/SelectPickLocation";
 
 const Drawer = createDrawerNavigator();
 
@@ -55,6 +56,16 @@ export default function App() {
         <Drawer.Screen
           name="Profile"
           component={Profile}
+          options={{
+            drawerItemStyle: {
+              display: "none",
+            },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="SelectPickLocation"
+          component={SelectPickLocation}
           options={{
             drawerItemStyle: {
               display: "none",
