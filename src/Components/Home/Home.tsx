@@ -52,7 +52,6 @@ const Home = ({ navigation }: Props) => {
       );
 
       return () => {
-        // Unsubscribe from location updates when the component unmounts
         if (locationSubscription) {
           locationSubscription.remove();
         }
