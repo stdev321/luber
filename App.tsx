@@ -9,6 +9,8 @@ import Home from "./src/Components/Home/Home";
 import Profile from "./src/Components/Profile/Profile";
 import SelectPickLocation from "./src/Components/SelectPickLocation/SelectPickLocation";
 import History from "./src/Components/History/History";
+import SelectDestLocation from "./src/Components/SelectDestLocation/SelectDestLocation";
+import FullMapView from "./src/Components/MapView/FullMapView";
 
 const Drawer = createDrawerNavigator();
 
@@ -67,6 +69,26 @@ export default function App() {
         <Drawer.Screen
           name="SelectPickLocation"
           component={SelectPickLocation}
+          options={{
+            drawerItemStyle: {
+              display: "none",
+            },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="SelectDestLocation"
+          component={SelectDestLocation}
+          options={{
+            drawerItemStyle: {
+              display: "none",
+            },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="MapView"
+          component={FullMapView}
           options={{
             drawerItemStyle: {
               display: "none",

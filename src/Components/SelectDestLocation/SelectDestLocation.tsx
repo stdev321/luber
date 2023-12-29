@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import { Pressable, ScrollView, View, Image, Text } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import IconI from "react-native-vector-icons/Ionicons";
-import { styles } from "./SelectPickLocationStyle";
+import { styles } from "./SelectDestLocationStyle";
 import { StatusBar } from "expo-status-bar";
 import TextField from "../../Atoms/TextInput/TextField";
 
@@ -10,7 +10,7 @@ interface Props {
   navigation: any;
 }
 
-const SelectPickLocation = ({ navigation }: Props) => {
+const SelectDestLocation = ({ navigation }: Props) => {
   return (
     <ScrollView>
       <StatusBar />
@@ -32,10 +32,10 @@ const SelectPickLocation = ({ navigation }: Props) => {
               size={30}
             />
             <TextField
-              placeholder="Search Pickup Location"
+              placeholder="Search Destination Location"
               style={styles.inputBox}
             />
-            <Pressable>
+            <Pressable onPress={() => {}}>
               <IconI size={20} name="close-circle-outline"></IconI>
             </Pressable>
           </View>
@@ -61,6 +61,6 @@ const SelectPickLocation = ({ navigation }: Props) => {
       </View>
     </ScrollView>
   );
-};
+}
 
-export default SelectPickLocation;
+export default SelectDestLocation;
