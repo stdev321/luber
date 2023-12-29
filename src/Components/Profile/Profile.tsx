@@ -10,7 +10,8 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { styles } from "./ProfileStyle";
-import ButtonPrimary from './../../Atoms/Button/ButtonPrimary';
+import ButtonPrimary from "./../../Atoms/Button/ButtonPrimary";
+import TextField from "./../../Atoms/TextInput/TextField";
 
 interface Props {
   navigation: any; // Type for navigation prop
@@ -19,9 +20,9 @@ interface Props {
 type ItemProps = { label: string; value: string };
 
 const Item = ({ label, value }: ItemProps) => (
-  <Pressable onPress={() => console.log("error")}>
+  <Pressable onPress={() => console.log("clicked")}>
     <View style={styles.item}>
-      <View>
+      <View style={styles.itemContent}>
         {value && <Text>{value}</Text>}
         <Text>{label}</Text>
       </View>
@@ -50,7 +51,7 @@ const Profile = ({ navigation }: Props) => {
     },
     {
       id: 4,
-      label: "Set Password",
+      label: "Password",
       value: "",
     },
   ]);
@@ -69,7 +70,9 @@ const Profile = ({ navigation }: Props) => {
         <Pressable>
           <Icon
             name="arrow-back"
-            onPress={() => navigation.navigate("Home")}
+            onPress={() =>
+              showEdit ? setShowEdit(false) : navigation.navigate("Home")
+            }
             size={22}
           />
         </Pressable>
@@ -86,18 +89,16 @@ const Profile = ({ navigation }: Props) => {
         {showEdit ? (
           <View>
             {userData.map((data) => (
-              <View key={data.id}>
+              <View key={data.id} style={styles.inputWrap}>
                 <Text style={styles.label}>{data.label}:</Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(text) => handleChange(text)}
+                <TextField
+                  onChange={(text) => handleChange(text)}
                   value={data.value}
                   placeholder={`Enter your ${data.label}`}
                 />
               </View>
             ))}
-
-            <ButtonPrimary  title="Update" onPress={() => setShowEdit(false)} />
+            <ButtonPrimary title="Update" onPress={() => setShowEdit(false)} />
           </View>
         ) : (
           <View>
@@ -108,9 +109,7 @@ const Profile = ({ navigation }: Props) => {
               )}
               keyExtractor={(item: any) => item.id}
             />
-            <View style={styles.logoutBtn}>
-              <ButtonPrimary title="Logout" onPress={() => navigation.navigate("Login")} />
-            </View>
+            <ButtonPrimary title="Logout" onPress={() => navigation.goBack()} />
           </View>
         )}
       </View>

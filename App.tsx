@@ -7,6 +7,7 @@ import Login from "./src/Components/Login/Login";
 import Register from "./src/Components/Register/Register";
 import Home from "./src/Components/Home/Home";
 import Profile from "./src/Components/Profile/Profile";
+import History from './src/Components/History/History';
 
 const Drawer = createDrawerNavigator();
 
@@ -59,6 +60,13 @@ export default function App() {
             drawerItemStyle: {
               display: "none",
             },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="Your Rides"
+          component={History}
+          options={{
             headerShown: false,
           }}
         />
