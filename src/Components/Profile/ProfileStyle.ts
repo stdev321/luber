@@ -4,23 +4,31 @@ export const styles = StyleSheet.create({
   userName: {
     fontSize: 24,
     marginBottom: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   profileWrapper: {
     padding: 20,
-    marginTop: 25
+    marginTop: 25,
   },
   item: {
     borderBottomWidth: 1,
+    borderColor: "#ccc",
     marginBottom: 20,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: 'center'
+    alignItems: "center",
   },
   itemContent: {
-    paddingTop: 10,
-    paddingBottom: 10
+    paddingTop: 13,
+    paddingBottom: 13,
+  },
+  text: {
+    fontSize: 18,
+  },
+  placeHolderText: {
+    fontSize: 15,
+    color: "#aaa",
   },
   logoutBtn: {
     display: "flex",
@@ -30,7 +38,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: 'center'
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
@@ -45,6 +53,18 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   inputWrap: {
-    marginBottom: 12
-  }
+    marginBottom: 12,
+  },
+  logoutButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+    borderRadius: 7,
+    marginTop: 20,
+    paddingVertical: 15,
+  },
+  logoutButtonText: {
+    color: "#fff",
+    fontSize: 20,
+  },
 });

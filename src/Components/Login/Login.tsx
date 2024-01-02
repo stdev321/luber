@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
-import { styles } from './LoginStyle';
-import { View, Image, Text, Pressable, ScrollView, ActivityIndicator } from 'react-native';
+import { styles } from "./LoginStyle";
+import {
+  View,
+  Image,
+  Text,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   Easing,
   withDelay,
-} from 'react-native-reanimated';
-import TextField from '../../Atoms/TextInput/TextField';
+} from "react-native-reanimated";
+import TextField from "../../Atoms/TextInput/TextField";
 
 interface Props {
   navigation: any;
@@ -52,8 +59,14 @@ const Login = ({ navigation }: Props) => {
 
   const startAnimation = () => {
     setShowComponents(false);
-    opacity.value = withTiming(1, { duration: 500, easing: Easing.inOut(Easing.ease) });
-    scale.value = withDelay(200, withTiming(1, { duration: 500, easing: Easing.inOut(Easing.ease) }));
+    opacity.value = withTiming(1, {
+      duration: 500,
+      easing: Easing.inOut(Easing.ease),
+    });
+    scale.value = withDelay(
+      200,
+      withTiming(1, { duration: 500, easing: Easing.inOut(Easing.ease) })
+    );
     setShowComponents(true);
   };
 
@@ -73,8 +86,13 @@ const Login = ({ navigation }: Props) => {
   });
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#fff', flex: 1 }}>
-      <Pressable style={styles.backBtn} onPress={() => { navigation.goBack() }}>
+    <SafeAreaView style={{ backgroundColor: "#fff", flex: 1 }}>
+      <Pressable
+        style={styles.backBtn}
+        onPress={() => {
+          navigation.goBack();
+        }}
+      >
         <Image
           style={{ width: 25, height: 25 }}
           source={require("../../../assets/back.png")}
@@ -83,11 +101,25 @@ const Login = ({ navigation }: Props) => {
       {showComponents ? (
         <Animated.ScrollView style={[styles.container, containerStyle]}>
           <Text style={styles.text}>Enter your Email for verification</Text>
-          <Text style={styles.subText}>This email will be used for all ride-related communication. You shall receive an SMS with a code for verification.</Text>
-          <TextField placeholder='Email' onChange={handleEmailChange} value={email} />
-          <TextField placeholder='Password' onChange={handlePasswordChange} value={password} />
+          <Text style={styles.subText}>
+            This email will be used for all ride-related communication. You
+            shall receive an SMS with a code for verification.
+          </Text>
+          <TextField
+            placeholder="Email"
+            onChange={handleEmailChange}
+            value={email}
+          />
+          <TextField
+            placeholder="Password"
+            onChange={handlePasswordChange}
+            value={password}
+          />
           <Pressable
-            style={[styles.buttonStyle, { opacity: isNextButtonDisabled ? 0.5 : 1 }]}
+            style={[
+              styles.buttonStyle,
+              { opacity: isNextButtonDisabled ? 0.5 : 1 },
+            ]}
             onPress={handleNextPress}
             disabled={isNextButtonDisabled || loading}
           >
@@ -99,7 +131,11 @@ const Login = ({ navigation }: Props) => {
           </Pressable>
         </Animated.ScrollView>
       ) : (
-        <ActivityIndicator size="large" color="#000" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+        <ActivityIndicator
+          size="large"
+          color="#000"
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        />
       )}
     </SafeAreaView>
   );
