@@ -1,17 +1,18 @@
+import React, { useState, useCallback } from "react";
 import {
   Text,
   View,
-  Button,
   Pressable,
   FlatList,
-  ScrollView,
+  Image,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { styles } from "./ProfileStyle";
 import ButtonPrimary from "./../../Atoms/Button/ButtonPrimary";
 import TextField from "./../../Atoms/TextInput/TextField";
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 
 interface Props {
   navigation: any; // Type for navigation prop
@@ -23,16 +24,18 @@ const Item = ({ label, value }: ItemProps) => (
   <Pressable onPress={() => console.log("clicked")}>
     <View style={styles.item}>
       <View style={styles.itemContent}>
-        {value && <Text>{value}</Text>}
-        <Text>{label}</Text>
+        {value && <Text style={styles.text}>{value}</Text>}
+        <Text style={styles.placeHolderText}>{label}</Text>
       </View>
-      <Icon name="chevron-forward-outline" size={22} />
     </View>
   </Pressable>
 );
 
 const Profile = ({ navigation }: Props) => {
   const [showEdit, setShowEdit] = useState(false);
+  const [loading, setLoading] = useState(false); // Added loading state
+  const [updateLoading, setUpdateLoading] = useState(false);
+
   const [userData, setUserData] = useState([
     {
       id: 1,
@@ -56,8 +59,37 @@ const Profile = ({ navigation }: Props) => {
     },
   ]);
 
-  const handleLogout = () => {
-    navigation.goBack();
+  const handleLogout = useCallback(() => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          onPress: async () => {
+            setLoading(true); // Show loading spinner
+            setTimeout(() => {
+              navigation.navigate("Front");
+              setLoading(false);
+            }, 2000);
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  }, [navigation]);
+
+
+  const handleUpdate = () => {
+    setUpdateLoading(true);
+    setTimeout(() => {
+      setShowEdit(false);
+      setUpdateLoading(false);
+    }, 1000); // Change the delay as needed
   };
 
   const handleChange = (text: string) => {
@@ -68,13 +100,15 @@ const Profile = ({ navigation }: Props) => {
     <View>
       <StatusBar />
       <View style={styles.profileWrapper}>
-        <Pressable>
-          <Icon
-            name="arrow-back"
-            onPress={() =>
-              showEdit ? setShowEdit(false) : navigation.navigate("Home")
-            }
-            size={22}
+        <Pressable
+          style={{ paddingVertical: 20 }}
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        >
+          <Image
+            style={{ width: 25, height: 25 }}
+            source={require("../../../assets/back.png")}
           />
         </Pressable>
         <View style={styles.header}>
@@ -93,13 +127,25 @@ const Profile = ({ navigation }: Props) => {
               <View key={data.id} style={styles.inputWrap}>
                 <Text style={styles.label}>{data.label}:</Text>
                 <TextField
+                style={styles.text}
                   onChange={(text) => handleChange(text)}
                   value={data.value}
                   placeholder={`Enter your ${data.label}`}
                 />
               </View>
             ))}
-            <ButtonPrimary title="Update" onPress={() => setShowEdit(false)} />
+            {/* <ButtonPrimary title="Update" onPress={() => setShowEdit(false)} /> */}
+            <Pressable
+            style={styles.logoutButton}
+            onPress={handleUpdate}
+            disabled={updateLoading} // Disable button during loading
+          >
+            {updateLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.logoutButtonText}>Update</Text>
+            )}
+          </Pressable>
           </View>
         ) : (
           <View>
@@ -110,7 +156,17 @@ const Profile = ({ navigation }: Props) => {
               )}
               keyExtractor={(item: any) => item.id}
             />
-            <ButtonPrimary title="Logout" onPress={() => navigation.goBack()} />
+            <Pressable
+              style={styles.logoutButton}
+              onPress={handleLogout}
+              disabled={loading} // Disable button during loading
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.logoutButtonText}>Logout</Text>
+              )}
+            </Pressable>
           </View>
         )}
       </View>

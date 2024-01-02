@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  ScrollView,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { ScrollView, Text, View, Pressable, Image, FlatList, TouchableOpacity } from "react-native";
 import { mapStyle } from "../../GlobalStyle/MapStyle";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/Entypo";
@@ -27,6 +17,7 @@ const Home = ({ navigation }: Props) => {
   const [lati, setLati] = useState(null);
   const [longi, setLongi] = useState(null);
   const [heading, setHeading] = useState(1);
+  const [activeItemIndex, setActiveItemIndex] = useState(0); // State to track active item
 
   useEffect(() => {
     (async () => {
@@ -61,18 +52,49 @@ const Home = ({ navigation }: Props) => {
 
   const sliderData = [
     {
-      title: "Two Wheeler",
-      icon: require("../../../assets/scooter.png"),
+      title: "Daily",
+      icon: require("../../../assets/car.png"),
+    },
+    {
+      title: "Bike",
+      icon: require("../../../assets/bike.png"),
     },
     {
       title: "Three Wheeler",
-      icon: require("../../../assets/autorickshaw.png"),
+      icon: require("../../../assets/rickshaw.png"),
+    },
+    {
+      title: "Four Wheeler",
+      icon: require("../../../assets/car.png"),
     },
     {
       title: "Four Wheeler",
       icon: require("../../../assets/car.png"),
     },
   ];
+
+  const renderSliderItem = ({ item, index }: { item: any; index: number }) => {
+    const isActive = index === activeItemIndex; // Check if it's the active item
+
+    return (
+      <View style={styles.sliderbar}>
+        <TouchableOpacity
+          style={[
+            styles.sliderBarTouchable,
+            isActive && styles.activeItem, // Apply the activeItem style
+          ]}
+          onPress={() => setActiveItemIndex(index)} // Set the active item on press
+        >
+          <Image style={{ width: 32, height: 32 }} source={item.icon} />
+          <Text style={[styles.sliderText, isActive && styles.activeText]}>
+            {item.title}
+          </Text>
+          {isActive && <View style={styles.activeTextUnderline} />}
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
 
   return (
     <ScrollView>
@@ -87,9 +109,19 @@ const Home = ({ navigation }: Props) => {
           >
             <Image source={require("../../../assets/menu.png")} />
           </Pressable>
-          <Pressable style={styles.searchInputBox} onPress={() => {navigation.navigate('SelectPickLocation')}}>
-            <Icon name="dot-single" style={{ color: "#3bfc2d" }} size={30} />
-            <Text style={{ fontSize: 18, marginStart: 20 }}>Search Pickup</Text>
+          <Pressable
+            style={styles.searchInputBox}
+            onPress={() => {
+              navigation.navigate("SelectPickLocation");
+            }}
+          >
+            <Image
+              style={styles.greenDot}
+              source={require("../../../assets/green-dot.png")}
+            />
+            <Text style={{ fontSize: 15, marginStart: 10, color: "#424242" }}>
+              Search Pickup
+            </Text>
           </Pressable>
           <Pressable
             style={styles.searchProfilebutton}
@@ -153,73 +185,69 @@ const Home = ({ navigation }: Props) => {
           <FlatList
             data={sliderData}
             horizontal
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.sliderbar}>
-                  <TouchableOpacity style={styles.sliderBarTouchable}>
-                    <Image
-                      style={{ width: 40, height: 40 }}
-                      source={item.icon}
-                    />
-                    <Text>{item.title}</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              renderSliderItem({ item, index }) // Assuming renderSliderItem is your rendering function
+            )}
           />
         </View>
 
         <View style={styles.bottomView}>
           <View style={{ height: 50, margin: 5 }}>
-            <Pressable style={styles.bottomViewInput} onPress={() => {navigation.navigate('SelectDestLocation')}}>
+            <Pressable
+              style={styles.bottomViewInput}
+              onPress={() => {
+                navigation.navigate("SelectDestLocation");
+              }}
+            >
               <Image
-                style={{ width: 30, height: 30 }}
+                style={{ width: 15, height: 15 }}
                 source={require("../../../assets/search.png")}
               />
-              <Text style={{ fontSize: 20, marginStart: 20 }}>
+              <Text
+                style={{ fontSize: 19, marginStart: 20, fontWeight: "500" }}
+              >
                 Search Destination
               </Text>
             </Pressable>
           </View>
-          <View style={{ height: 50 }}>
+          <View style={{ height: 40 }}>
             <Pressable style={styles.recentLocation}>
               <Image
-                style={{ width: 30, height: 30 }}
-                source={require("../../../assets/locationpin.png")}
+                style={{ width: 16, height: 22 }}
+                source={require("../../../assets/location.png")}
               />
-              <Text style={{ fontSize: 20, marginStart: 20 }}>
-                Mohali bus Stand
+              <Text style={{ fontSize: 14, marginStart: 20 }}>
+                Patiala Bus Stand Sheran Wala Gate,Patiala,
+              </Text>
+            </Pressable>
+          </View>
+          <View style={{ height: 40 }}>
+            <Pressable style={styles.recentLocation}>
+              <Image
+                style={{ width: 16, height: 22 }}
+                source={require("../../../assets/location.png")}
+              />
+              <Text style={{ fontSize: 14, marginStart: 20 }}>
+                Bus Stand Sector 43 ISBT Rd, Sector 43 B,
               </Text>
             </Pressable>
           </View>
           <View style={{ height: 50 }}>
-            <Pressable style={styles.recentLocation} >
-              <Image
-                style={{ width: 30, height: 30 }}
-                source={require("../../../assets/locationpin.png")}
-              />
-              <Text style={{ fontSize: 20, marginStart: 20 }}>
-                Mohali Railway Stand
-              </Text>
-            </Pressable>
-          </View>
-          <View style={{ height: 50 }}>
             <Pressable style={styles.recentLocation}>
               <Image
-                style={{ width: 30, height: 30 }}
-                source={require("../../../assets/locationpin.png")}
+                style={{ width: 16, height: 22 }}
+                source={require("../../../assets/location.png")}
               />
-              <Text style={{ fontSize: 20, marginStart: 20 }}>
-                Phase 9
-              </Text>
+              <Text style={{ fontSize: 14, marginStart: 20 }}>Phase 9</Text>
             </Pressable>
           </View>
         </View>
 
-        <Image
+        {/* <Image
           style={styles.bannerImage}
           source={require("../../../assets/loginbanner.png")}
-        />
+        /> */}
       </View>
     </ScrollView>
   );
