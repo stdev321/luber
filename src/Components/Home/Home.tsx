@@ -104,23 +104,25 @@ const Home = ({ navigation }: Props) => {
           </Pressable>
         </View>
         <View style={styles.MapViewContainer}>
-          {lati !== null && longi !== null ? (
             <MapView
               style={styles.map}
               region={{
-                latitude: (lati + 30.742162) / 2,
-                longitude: (longi + 76.778599) / 2,
-                latitudeDelta: Math.abs(lati - 30.742162) + 0.05,
-                longitudeDelta: Math.abs(longi - 76.778599) + 0.05,
+                latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
+                longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
+                latitudeDelta: Math.abs( lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
+                longitudeDelta: Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
               }}
               customMapStyle={mapStyle}
-              maxZoomLevel={15}
+              // maxZoomLevel={15}
               minZoomLevel={10}
               maxDelta={0.08}
             >
               <Polyline
                 coordinates={[
-                  { latitude: lati, longitude: longi },
+                  {
+                    latitude: lati !== null ? lati : 30.742162,
+                    longitude: longi !== null ? longi : 76.778599,
+                  },
                   { latitude: 30.742162, longitude: 76.778599 },
                 ]}
                 strokeWidth={3}
@@ -129,7 +131,8 @@ const Home = ({ navigation }: Props) => {
 
               <Marker
                 key={1}
-                coordinate={{ latitude: lati, longitude: longi }}
+                coordinate={{ latitude: lati !== null ? lati : 30.742162,
+                  longitude: longi !== null ? longi : 76.778599, }}
                 title={"Demo"}
                 description={"Demo For Testing"}
                 image={require("../../../assets/carpin1.png")}
@@ -145,9 +148,6 @@ const Home = ({ navigation }: Props) => {
                 // rotation={heading}
               />
             </MapView>
-          ) : (
-            <Text>Loading</Text>
-          )}
         </View>
         <View style={styles.sliderBox}>
           <FlatList
