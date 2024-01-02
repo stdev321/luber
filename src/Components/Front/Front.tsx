@@ -57,7 +57,7 @@ const Front = ({ navigation }: Props) => {
     <StatusBar/>
       <View style={styles.container}>
           <Image
-             style={{ width: "100%", height: "70%", resizeMode: "cover" }}
+             style={{ width: "100%", height: "71%", resizeMode: "cover" }}
             source={require("../../../assets/login.jpg")}
           />
         <ScrollView style={styles.contentWrap}>
