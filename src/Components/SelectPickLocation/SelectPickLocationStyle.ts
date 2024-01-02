@@ -7,13 +7,16 @@ export const styles = StyleSheet.create({
     marginTop: 50,
     alignItems: "center",
   },
+  demo: {
+    width: width - 10
+  },
   topSearch: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
     width: width,
-    maxHeight: 100
+    // maxHeight: 100
   },
   backButton: {
     marginTop: 7,
@@ -21,9 +24,9 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     width: 320,
-    height: 50,
+    // height: 50,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "baseline",
     marginStart: 10,
     marginEnd: 10,
     flexDirection: "row",
@@ -35,12 +38,12 @@ export const styles = StyleSheet.create({
   },
   inputBox: {
     width: 250,
-    height: 40,
+    // height: 40,
     borderWidth: 0,
   },
   mainContainer: {
     marginTop: 40,
-   height: 300,
+    height: 300,
   },
   bottomContainer: {
     width: 400,
@@ -51,7 +54,7 @@ export const styles = StyleSheet.create({
   bottomButtons: {
     padding: 5,
     margin: 5,
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

@@ -5,6 +5,7 @@ import IconI from "react-native-vector-icons/Ionicons";
 import { styles } from "./SelectPickLocationStyle";
 import { StatusBar } from "expo-status-bar";
 import TextField from "../../Atoms/TextInput/TextField";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 interface Props {
   navigation: any;
@@ -12,7 +13,7 @@ interface Props {
 
 const SelectPickLocation = ({ navigation }: Props) => {
   return (
-    <ScrollView>
+    <View>
       <StatusBar />
       <View style={styles.container}>
         <View style={styles.topSearch}>
@@ -31,10 +32,27 @@ const SelectPickLocation = ({ navigation }: Props) => {
               style={{ color: "#3bfc2d", width: 20 }}
               size={30}
             />
-            <TextField
+            {/* <TextField
               placeholder="Search Pickup Location"
               style={styles.inputBox}
+            /> */}
+            <GooglePlacesAutocomplete
+              placeholder="Search"
+              onPress={(data, details = null) => {
+                // 'details' is provided when fetchDetails = true
+                console.log(data, details);
+              }}
+              query={{
+                key: "AIzaSyAUrZdfSdHFZbz-kAhi9sj2erP1dQvZD5E",
+                language: "en",
+              }}
+              styles={{
+                listView: {
+                  zIndex: 999999,
+                },
+              }}
             />
+
             <Pressable>
               <IconI size={20} name="close-circle-outline"></IconI>
             </Pressable>
@@ -49,6 +67,7 @@ const SelectPickLocation = ({ navigation }: Props) => {
         </View>
 
         <View style={styles.bottomContainer}>
+        
           <Pressable style={styles.bottomButtons}>
             <Icon name="location-pin" size={30} style={{color: "#3bfc2d", width : 40}} />
             <Text>Current Location</Text>
@@ -59,7 +78,7 @@ const SelectPickLocation = ({ navigation }: Props) => {
           </Pressable>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
