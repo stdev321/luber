@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { styles } from "./HistoryStyles";
 import { StatusBar } from "expo-status-bar";
+import { Image } from "react-native";
 
 type IRideHistory = {
   id: number;
@@ -28,7 +29,13 @@ const Item = ({ data: { dataTime, vehicalType, location } }: ItemProps) => (
         <Text style={styles.addressText}>{location}</Text>
       </View>
     </View>
-    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <Text>$45</Text>
       <View>
         <Icon size={34} name="person-circle-outline" />
@@ -95,26 +102,34 @@ const History = ({ navigation }: Props) => {
   ]);
 
   return (
-    <View>
+    <View style={{flex:1}}>
       <StatusBar />
       <View style={styles.container}>
-        <Pressable>
-          <Icon
-            name="arrow-back"
-            onPress={() => navigation.navigate("Home")}
-            size={22}
+        <Pressable
+          style={styles.backBtn}
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        >
+          <Image
+            style={{ width: 25, height: 25 }}
+            source={require("../../../assets/back.png")}
           />
         </Pressable>
         <View style={styles.heading}>
           <Text style={styles.mainHeaderTitle}>History</Text>
         </View>
       </View>
-      <FlatList
-        style={{ padding: 20 }}
-        data={rideHistory}
-        renderItem={({ item }: { item: IRideHistory }) => <Item data={item} />}
-        keyExtractor={(item: any) => item.id}
-      />
+        <FlatList
+          style={{ paddingHorizontal: 20 }}
+          data={rideHistory}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }: { item: IRideHistory }) => (
+            <Item data={item} />
+          )}
+          keyExtractor={(item: any) => item.id.toString()}
+        />
+      
     </View>
   );
 };

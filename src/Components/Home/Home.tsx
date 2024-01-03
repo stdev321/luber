@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import * as Location from "expo-location";
 import { styles } from "./HomeStyle";
 import { StatusBar } from "expo-status-bar";
+import { Modal } from "react-native";
 
 interface Props {
   navigation: any;
@@ -25,7 +26,8 @@ const Home = ({ navigation }: Props) => {
   const [lati, setLati] = useState(null);
   const [longi, setLongi] = useState(null);
   const [heading, setHeading] = useState(1);
-  const [activeItemIndex, setActiveItemIndex] = useState(0); // State to track active item
+  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -79,6 +81,10 @@ const Home = ({ navigation }: Props) => {
       title: "Four Wheeler",
       icon: require("../../../assets/car.png"),
     },
+  ];
+  const recentLocationsData = [
+    { id: 1, location: "Patiala Bus Stand Sheran Wala Gate, Patiala" },
+    { id: 2, location: "Bus Stand Sector 43 ISBT Rd, Sector 43 B" },
   ];
 
   const renderSliderItem = ({ item, index }: { item: any; index: number }) => {
@@ -143,64 +149,59 @@ const Home = ({ navigation }: Props) => {
           </Pressable>
         </View>
         <View style={styles.MapViewContainer}>
-          <MapView
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            region={{
-              latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
-              longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
-              latitudeDelta:
-                Math.abs(lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
-              longitudeDelta:
-                Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
-            }}
-            customMapStyle={mapStyle}
-            // maxZoomLevel={15}
-            minZoomLevel={10}
-            maxDelta={0.08}
-          >
-            <Polyline
-              coordinates={[
-                {
-                  latitude: lati !== null ? lati : 30.742162,
-                  longitude: longi !== null ? longi : 76.778599,
-                },
-                { latitude: 30.742162, longitude: 76.778599 },
-              ]}
-              strokeWidth={3}
-              strokeColor="white"
-            />
-
-            <Marker
-              key={1}
-              coordinate={{
-                latitude: lati !== null ? lati : 30.742162,
-                longitude: longi !== null ? longi : 76.778599,
+            <MapView
+              style={styles.map}
+              region={{
+                latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
+                longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
+                latitudeDelta: Math.abs( lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
+                longitudeDelta: Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
               }}
-              title={"Demo"}
-              description={"Demo For Testing"}
-              icon={require("../../../assets/carpin1.png")}
-              rotation={heading}
-            />
-            <Marker
-              key={2}
-              coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
-              title={"Demo"}
-              description={"Demo For Testing"}
-              icon={require("../../../assets/locationpin.png")}
-              // image={require('../../../assets/carpin1.png')}
-              // rotation={heading}
-            />
-          </MapView>
+              customMapStyle={mapStyle}
+              // maxZoomLevel={15}
+              minZoomLevel={10}
+              maxDelta={0.08}
+            >
+              <Polyline
+                coordinates={[
+                  {
+                    latitude: lati !== null ? lati : 30.742162,
+                    longitude: longi !== null ? longi : 76.778599,
+                  },
+                  { latitude: 30.742162, longitude: 76.778599 },
+                ]}
+                strokeWidth={3}
+                strokeColor="white"
+              />
+
+              <Marker
+                key={1}
+                coordinate={{ latitude: lati !== null ? lati : 30.742162,
+                  longitude: longi !== null ? longi : 76.778599, }}
+                title={"Demo"}
+                description={"Demo For Testing"}
+                image={require("../../../assets/carpin1.png")}
+                icon={require("../../../assets/carpin1.png")}
+                rotation={heading}
+              />
+              <Marker
+                key={2}
+                coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
+                title={"Demo"}
+                description={"Demo For Testing"}
+                // image={require('../../../assets/carpin1.png')}
+                // rotation={heading}
+              />
+            </MapView>
         </View>
         <View style={styles.sliderBox}>
           <FlatList
             data={sliderData}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) =>
+            renderItem={({ item, index }) => (
               renderSliderItem({ item, index }) // Assuming renderSliderItem is your rendering function
-            }
+            )}
           />
         </View>
 
@@ -223,36 +224,68 @@ const Home = ({ navigation }: Props) => {
               </Text>
             </Pressable>
           </View>
-          <View style={{ height: 40 }}>
-            <Pressable style={styles.recentLocation}>
-              <Image
-                style={{ width: 16, height: 22 }}
-                source={require("../../../assets/location.png")}
-              />
-              <Text style={{ fontSize: 14, marginStart: 20 }}>
-                Patiala Bus Stand Sheran Wala Gate,Patiala,
-              </Text>
+          <FlatList
+            data={recentLocationsData}
+            renderItem={({ item, index }) => (
+              <View style={{ height: 40 }}>
+                <Pressable
+                  style={[
+                    styles.recentLocation,
+                    index === recentLocationsData.length - 1 && {
+                      borderBottomWidth: 0,
+                    },
+                  ]}
+                >
+                  <Image
+                    style={{ width: 16, height: 22 }}
+                    source={require("../../../assets/location.png")}
+                  />
+                  <Text style={{ fontSize: 14, marginStart: 20 }}>
+                    {item.location}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+          />
+        </View>
+        <View style={styles.inviteWrap}>
+          <View>
+            <Text style={styles.inviteHeading}>invite your friends to </Text>
+            <Text style={styles.inviteHeading}>try Luber.</Text>
+            <View>
+              <Text style={styles.inviteCode}>GGG7GWU</Text>
+            </View>
+            {/* <Text style={styles.shareCode}>Share invite code</Text> */}
+            <Pressable onPress={() => setIsModalVisible(true)}>
+              <Text style={styles.shareCode}>Share invite code</Text>
             </Pressable>
           </View>
-          <View style={{ height: 40 }}>
-            <Pressable style={styles.recentLocation}>
-              <Image
-                style={{ width: 16, height: 22 }}
-                source={require("../../../assets/location.png")}
-              />
-              <Text style={{ fontSize: 14, marginStart: 20 }}>
-                Bus Stand Sector 43 ISBT Rd, Sector 43 B,
-              </Text>
-            </Pressable>
-          </View>
-          <View style={{ height: 50 }}>
-            <Pressable style={styles.recentLocation}>
-              <Image
-                style={{ width: 16, height: 22 }}
-                source={require("../../../assets/location.png")}
-              />
-              <Text style={{ fontSize: 14, marginStart: 20 }}>Phase 9</Text>
-            </Pressable>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={isModalVisible}
+            onRequestClose={() => setIsModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text>Your invite code: GGG7GWU</Text>
+                <Text style={styles.notAvailableText}>
+                  Sorry, this functionality is not available at the moment.
+                </Text>
+                <Pressable
+                  style={styles.closeModalBtn}
+                  onPress={() => setIsModalVisible(false)}
+                >
+                  <Text style={styles.closeBtnTxt}>Close</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          <View>
+            <Image
+              style={styles.inviteImg}
+              source={require("../../../assets/invite-friends.jpg")}
+            />
           </View>
         </View>
 
