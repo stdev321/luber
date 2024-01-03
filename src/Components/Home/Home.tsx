@@ -82,6 +82,7 @@ const Home = ({ navigation }: Props) => {
       icon: require("../../../assets/car.png"),
     },
   ];
+  
   const recentLocationsData = [
     { id: 1, location: "Patiala Bus Stand Sheran Wala Gate, Patiala" },
     { id: 2, location: "Bus Stand Sector 43 ISBT Rd, Sector 43 B" },
@@ -110,8 +111,8 @@ const Home = ({ navigation }: Props) => {
   };
 
   return (
-    <ScrollView>
-      <StatusBar style="light" />
+    <View>
+      <StatusBar style="light" backgroundColor="#000" />
       <View style={styles.container}>
         <View style={styles.topSearchBox}>
           <Pressable
@@ -149,7 +150,8 @@ const Home = ({ navigation }: Props) => {
           </Pressable>
         </View>
         <View style={styles.MapViewContainer}>
-            <MapView
+          <MapView
+            provider={PROVIDER_GOOGLE}
               style={styles.map}
               region={{
                 latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
@@ -180,7 +182,6 @@ const Home = ({ navigation }: Props) => {
                   longitude: longi !== null ? longi : 76.778599, }}
                 title={"Demo"}
                 description={"Demo For Testing"}
-                image={require("../../../assets/carpin1.png")}
                 icon={require("../../../assets/carpin1.png")}
                 rotation={heading}
               />
@@ -194,6 +195,7 @@ const Home = ({ navigation }: Props) => {
               />
             </MapView>
         </View>
+        
         <View style={styles.sliderBox}>
           <FlatList
             data={sliderData}
@@ -224,30 +226,30 @@ const Home = ({ navigation }: Props) => {
               </Text>
             </Pressable>
           </View>
-          <FlatList
-            data={recentLocationsData}
-            renderItem={({ item, index }) => (
-              <View style={{ height: 40 }}>
-                <Pressable
-                  style={[
-                    styles.recentLocation,
-                    index === recentLocationsData.length - 1 && {
-                      borderBottomWidth: 0,
-                    },
-                  ]}
-                >
-                  <Image
-                    style={{ width: 16, height: 22 }}
-                    source={require("../../../assets/location.png")}
-                  />
-                  <Text style={{ fontSize: 14, marginStart: 20 }}>
-                    {item.location}
-                  </Text>
-                </Pressable>
+          {recentLocationsData && recentLocationsData.length ? recentLocationsData.map((item: any, index : number) => { 
+            return (
+              <View key={index} style={{ height: 40 }}>
+              <Pressable
+                style={[
+                  styles.recentLocation,
+                  index === recentLocationsData.length - 1 && {
+                    borderBottomWidth: 0,
+                  },
+                ]}
+              >
+                <Image
+                  style={{ width: 16, height: 22 }}
+                  source={require("../../../assets/location.png")}
+                />
+                <Text style={{ fontSize: 14, marginStart: 20 }}>
+                  {item.location}
+                </Text>
+              </Pressable>
               </View>
-            )}
-          />
+            )
+          }) : ("Loading...")}
         </View>
+        
         <View style={styles.inviteWrap}>
           <View>
             <Text style={styles.inviteHeading}>invite your friends to </Text>
@@ -288,13 +290,8 @@ const Home = ({ navigation }: Props) => {
             />
           </View>
         </View>
-
-        {/* <Image
-          style={styles.bannerImage}
-          source={require("../../../assets/loginbanner.png")}
-        /> */}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
