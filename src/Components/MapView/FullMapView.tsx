@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import { mapStyle } from "../../GlobalStyle/MapStyle";
 import { styles } from "./MapViewStyle";
@@ -34,7 +34,7 @@ const FullMapView = ({ navigation }: Props) => {
 
       // Subscribe to location updates
       const locationSubscription = await Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.High, timeInterval: 1000},
+        { accuracy: Location.Accuracy.High, timeInterval: 1000 },
         (newLocation: any) => {
           setLocation(newLocation);
           setLati(newLocation.coords.latitude);
@@ -55,10 +55,11 @@ const FullMapView = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar />
+      <StatusBar style="light" backgroundColor="#000" />
       <View style={styles.container}>
         <MapView
           style={styles.map}
+          provider={PROVIDER_GOOGLE}
           region={{
             latitude: lati !== null ? lati : 30.742162,
             longitude: longi !== null ? longi : 76.778599,
@@ -91,7 +92,7 @@ const FullMapView = ({ navigation }: Props) => {
             }}
             title={"Demo"}
             description={"Demo For Testing"}
-            image={require("../../../assets/locationpin.png")}
+            // image={require("../../../assets/locationpin.png")}
             icon={require("../../../assets/locationpin.png")}
             // rotation={heading}
           />

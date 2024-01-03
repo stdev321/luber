@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Text, View, Pressable, Image, FlatList, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  Pressable,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { mapStyle } from "../../GlobalStyle/MapStyle";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import Icon from "react-native-vector-icons/Entypo";
 import * as Location from "expo-location";
 import { styles } from "./HomeStyle";
@@ -95,10 +103,9 @@ const Home = ({ navigation }: Props) => {
     );
   };
 
-
   return (
     <ScrollView>
-      <StatusBar />
+      <StatusBar style="light" />
       <View style={styles.container}>
         <View style={styles.topSearchBox}>
           <Pressable
@@ -136,59 +143,64 @@ const Home = ({ navigation }: Props) => {
           </Pressable>
         </View>
         <View style={styles.MapViewContainer}>
-            <MapView
-              style={styles.map}
-              region={{
-                latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
-                longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
-                latitudeDelta: Math.abs( lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
-                longitudeDelta: Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
-              }}
-              customMapStyle={mapStyle}
-              // maxZoomLevel={15}
-              minZoomLevel={10}
-              maxDelta={0.08}
-            >
-              <Polyline
-                coordinates={[
-                  {
-                    latitude: lati !== null ? lati : 30.742162,
-                    longitude: longi !== null ? longi : 76.778599,
-                  },
-                  { latitude: 30.742162, longitude: 76.778599 },
-                ]}
-                strokeWidth={3}
-                strokeColor="white"
-              />
+          <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            region={{
+              latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
+              longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
+              latitudeDelta:
+                Math.abs(lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
+              longitudeDelta:
+                Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
+            }}
+            customMapStyle={mapStyle}
+            // maxZoomLevel={15}
+            minZoomLevel={10}
+            maxDelta={0.08}
+          >
+            <Polyline
+              coordinates={[
+                {
+                  latitude: lati !== null ? lati : 30.742162,
+                  longitude: longi !== null ? longi : 76.778599,
+                },
+                { latitude: 30.742162, longitude: 76.778599 },
+              ]}
+              strokeWidth={3}
+              strokeColor="white"
+            />
 
-              <Marker
-                key={1}
-                coordinate={{ latitude: lati !== null ? lati : 30.742162,
-                  longitude: longi !== null ? longi : 76.778599, }}
-                title={"Demo"}
-                description={"Demo For Testing"}
-                image={require("../../../assets/carpin1.png")}
-                icon={require("../../../assets/carpin1.png")}
-                rotation={heading}
-              />
-              <Marker
-                key={2}
-                coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
-                title={"Demo"}
-                description={"Demo For Testing"}
-                // image={require('../../../assets/carpin1.png')}
-                // rotation={heading}
-              />
-            </MapView>
+            <Marker
+              key={1}
+              coordinate={{
+                latitude: lati !== null ? lati : 30.742162,
+                longitude: longi !== null ? longi : 76.778599,
+              }}
+              title={"Demo"}
+              description={"Demo For Testing"}
+              icon={require("../../../assets/carpin1.png")}
+              rotation={heading}
+            />
+            <Marker
+              key={2}
+              coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
+              title={"Demo"}
+              description={"Demo For Testing"}
+              icon={require("../../../assets/locationpin.png")}
+              // image={require('../../../assets/carpin1.png')}
+              // rotation={heading}
+            />
+          </MapView>
         </View>
         <View style={styles.sliderBox}>
           <FlatList
             data={sliderData}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => (
+            renderItem={({ item, index }) =>
               renderSliderItem({ item, index }) // Assuming renderSliderItem is your rendering function
-            )}
+            }
           />
         </View>
 
