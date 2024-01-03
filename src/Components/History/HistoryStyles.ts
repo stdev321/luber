@@ -7,9 +7,10 @@ export const styles = StyleSheet.create({
   },
   mainHeaderTitle: {
     fontSize: 24,
+    fontWeight:'500',
   },
   heading: {
-    marginTop: 20
+    marginTop: 10
   },
   dateTimeContainer: {
     // flex: 2,
@@ -22,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   dateTimeText: {
     fontSize: 16,
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
   vehicleTypeText: {
     fontSize: 14,
@@ -47,5 +48,8 @@ export const styles = StyleSheet.create({
   },
   scrollView: {
     padding: 10
-  }
+  },
+  backBtn: {
+    paddingVertical: 20,
+  },
 });
