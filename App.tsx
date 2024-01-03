@@ -11,6 +11,7 @@ import SelectPickLocation from "./src/Components/SelectPickLocation/SelectPickLo
 import History from "./src/Components/History/History";
 import SelectDestLocation from "./src/Components/SelectDestLocation/SelectDestLocation";
 import FullMapView from "./src/Components/MapView/FullMapView";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 
@@ -54,7 +55,10 @@ export default function App() {
         <Drawer.Screen
           name="Home"
           component={Home}
-          options={{ headerShown: false }}
+          options={{ drawerItemStyle: {
+            display: "none",
+          },
+          headerShown: false }}
         />
         <Drawer.Screen
           name="Profile"
@@ -97,10 +101,59 @@ export default function App() {
           }}
         />
         <Drawer.Screen
-          name="Your Rides"
+          name="History"
           component={History}
           options={{
             headerShown: false,
+            drawerIcon: ({ focused, size }) => (
+              <MaterialIcons
+                name="history"
+                size={size}
+                color={focused ? "#000" : "green"}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Payment"
+          component={History}
+          options={{
+            headerShown: false,
+            drawerIcon: ({ focused, size }) => (
+              <MaterialIcons
+                name="payment"
+                size={size}
+                color={focused ? "green" : "#000"}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Support"
+          component={History}
+          options={{
+            headerShown: false,
+            drawerIcon: ({ focused, size }) => (
+              <MaterialIcons
+                name="support"
+                size={size}
+                color={focused ? "green" : "#000"}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="about"
+          component={History}
+          options={{
+            headerShown: false,
+            drawerIcon: ({ focused, size }) => (
+              <MaterialIcons
+                name="info-outline"
+                size={size}
+                color={focused ? "green" : "#000"}
+              />
+            ),
           }}
         />
       </Drawer.Navigator>
