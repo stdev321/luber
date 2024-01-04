@@ -6,6 +6,7 @@ import { styles } from "./SelectPickLocationStyle";
 import { StatusBar } from "expo-status-bar";
 import TextField from "../../Atoms/TextInput/TextField";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { MaterialIcons } from "@expo/vector-icons";
 
 interface Props {
   navigation: any;
@@ -15,7 +16,7 @@ interface Props {
 const SelectPickLocation = ({ navigation, route }: Props) => {
   const { location, setLocation } = route.params;
   console.log(location);
-  
+
   return (
     <View>
       <StatusBar />
@@ -57,7 +58,7 @@ const SelectPickLocation = ({ navigation, route }: Props) => {
               styles={{
                 listView: {
                   zIndex: 999999,
-                  height: 10,
+                  // height: 10,
                 },
               }}
             />
@@ -72,19 +73,16 @@ const SelectPickLocation = ({ navigation, route }: Props) => {
             Please try a different address or locate on map
           </Text>
         </View>
-
         <View style={styles.bottomContainer}>
-          <View>
             <Pressable style={styles.bottomButtons}>
-              <Icon
-                name="location-pin"
-                size={30}
-                style={{ color: "#3bfc2d", width: 40 }}
+              <MaterialIcons
+                name="my-location"
+                size={20}
+                style={{paddingHorizontal:10}}
               />
               <Text>Current Location</Text>
             </Pressable>
-          </View>
-          <View>
+            <Text style={{color:'#ddd'}}>|</Text>
             <Pressable
               style={styles.bottomButtons}
               onPress={() => {
@@ -93,12 +91,11 @@ const SelectPickLocation = ({ navigation, route }: Props) => {
             >
               <Icon
                 name="location"
-                size={30}
-                style={{ color: "#2dc1fc", width: 40 }}
+                size={20}
+                style={{ paddingHorizontal:10 }}
               />
               <Text>Locate on map</Text>
             </Pressable>
-          </View>
         </View>
       </View>
     </View>
