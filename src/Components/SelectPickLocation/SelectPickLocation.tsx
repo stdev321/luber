@@ -5,7 +5,7 @@ import IconI from "react-native-vector-icons/Ionicons";
 import { styles } from "./SelectPickLocationStyle";
 import { StatusBar } from "expo-status-bar";
 import TextField from "../../Atoms/TextInput/TextField";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 interface Props {
   navigation: any;
@@ -16,21 +16,25 @@ const SelectPickLocation = ({ navigation }: Props) => {
     <View>
       <StatusBar />
       <View style={styles.container}>
-        <View style={styles.topSearch}>
+        <View style={styles.pickupWrap}>
           <Pressable
-            style={styles.backButton}
+            style={{ paddingVertical: 20 }}
             onPress={() => {
               navigation.navigate("Home");
             }}
           >
-            <IconI name="arrow-back" size={30} />
+            <Image
+              style={{ width: 25, height: 25 }}
+              source={require("../../../assets/back.png")}
+            />
           </Pressable>
-
+          <Text style={styles.pickUpText}>Pick up</Text>
+        </View>
+        <View style={styles.topSearch}>
           <View style={styles.searchInput}>
-            <Icon
-              name="dot-single"
-              style={{ color: "#3bfc2d", width: 20 }}
-              size={30}
+            <Image
+              style={styles.greenDot}
+              source={require("../../../assets/green-dot.png")}
             />
             {/* <TextField
               placeholder="Search Pickup Location"
@@ -49,33 +53,48 @@ const SelectPickLocation = ({ navigation }: Props) => {
               styles={{
                 listView: {
                   zIndex: 999999,
+                  height: 10,
                 },
               }}
             />
-
-            <Pressable>
-              <IconI size={20} name="close-circle-outline"></IconI>
-            </Pressable>
           </View>
         </View>
 
         <View style={styles.mainContainer}>
-          <Text style={{ fontSize: 24 }}>Location not found</Text>
-          <Text style={{ fontSize: 16 }}>
+          <Text style={{ fontSize: 20, fontWeight: "600", marginBottom: 20 }}>
+            Location not found
+          </Text>
+          <Text style={{ fontSize: 15, color: "#a1a1a1" }}>
             Please try a different address or locate on map
           </Text>
         </View>
 
         <View style={styles.bottomContainer}>
-        
-          <Pressable style={styles.bottomButtons}>
-            <Icon name="location-pin" size={30} style={{color: "#3bfc2d", width : 40}} />
-            <Text>Current Location</Text>
-          </Pressable>
-          <Pressable style={styles.bottomButtons} onPress={() => {navigation.navigate("MapView")}}>
-            <Icon name="location" size={30} style={{color: "#2dc1fc", width : 40}} />
-            <Text>Locate on map</Text>
-          </Pressable>
+          <View>
+            <Pressable style={styles.bottomButtons}>
+              <Icon
+                name="location-pin"
+                size={30}
+                style={{ color: "#3bfc2d", width: 40 }}
+              />
+              <Text>Current Location</Text>
+            </Pressable>
+          </View>
+          <View>
+            <Pressable
+              style={styles.bottomButtons}
+              onPress={() => {
+                navigation.navigate("MapView");
+              }}
+            >
+              <Icon
+                name="location"
+                size={30}
+                style={{ color: "#2dc1fc", width: 40 }}
+              />
+              <Text>Locate on map</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>

@@ -93,7 +93,7 @@ const Home = ({ navigation }: Props) => {
 
     return (
       <View style={styles.sliderbar}>
-        <TouchableOpacity
+        <Pressable
           style={[
             styles.sliderBarTouchable,
             isActive && styles.activeItem, // Apply the activeItem style
@@ -105,7 +105,7 @@ const Home = ({ navigation }: Props) => {
             {item.title}
           </Text>
           {isActive && <View style={styles.activeTextUnderline} />}
-        </TouchableOpacity>
+        </Pressable>
       </View>
     );
   };
