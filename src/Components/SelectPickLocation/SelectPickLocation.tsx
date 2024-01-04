@@ -9,9 +9,13 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 
 interface Props {
   navigation: any;
+  route: any;
 }
 
-const SelectPickLocation = ({ navigation }: Props) => {
+const SelectPickLocation = ({ navigation, route }: Props) => {
+  const { location, setLocation } = route.params;
+  console.log(location);
+  
   return (
     <View>
       <StatusBar />

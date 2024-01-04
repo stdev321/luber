@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { mapStyle } from "../../GlobalStyle/MapStyle";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
@@ -15,6 +16,8 @@ import * as Location from "expo-location";
 import { styles } from "./HomeStyle";
 import { StatusBar } from "expo-status-bar";
 import { Modal } from "react-native";
+import { getRoutCoordinate } from "../../Helper/CalculateRoute";
+import { reverseGeocode } from "../../Helper/Geocodding";
 
 interface Props {
   navigation: any;
@@ -22,12 +25,17 @@ interface Props {
 
 const Home = ({ navigation }: Props) => {
   const [location, setLocation] = useState<any>(null);
+  const [pickLocation, setPickLocation] = useState<any>(null);
+  const [destLocation, setDestLocation] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<any>(null);
+  const [pickAddress, setPickAddress] = useState<any>(null);
+  const [destAddress, setDestAddress] = useState<any>(null);
   const [lati, setLati] = useState(null);
   const [longi, setLongi] = useState(null);
   const [heading, setHeading] = useState(1);
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [markerRoutes, setMarkerRoutes] = useState<any>([])
 
   useEffect(() => {
     (async () => {
@@ -82,7 +90,7 @@ const Home = ({ navigation }: Props) => {
       icon: require("../../../assets/car.png"),
     },
   ];
-  
+
   const recentLocationsData = [
     { id: 1, location: "Patiala Bus Stand Sheran Wala Gate, Patiala" },
     { id: 2, location: "Bus Stand Sector 43 ISBT Rd, Sector 43 B" },
@@ -110,6 +118,39 @@ const Home = ({ navigation }: Props) => {
     );
   };
 
+  useEffect(() => {
+    if (location !== null) {
+      const getCoor = async () => { 
+        const getRoute = await getRoutCoordinate({
+          origin: location.coords,
+          destination: { latitude: 30.742162, longitude: 76.778599 },
+        });
+        setMarkerRoutes(getRoute)
+      }
+      getCoor()
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (location !== null && pickAddress === null) { 
+      const getAddress =async () => {
+        const getAdd = await reverseGeocode(location.coords)
+        setPickAddress(getAdd)
+      }
+      getAddress()
+    }
+  }, [location])
+
+  useEffect(() => {
+    if (pickLocation !== null) { 
+      const getAddress =async () => {
+        const getAdd = await reverseGeocode(pickLocation.coords)
+        setPickAddress(getAdd)
+      }
+      getAddress()
+    }
+  }, [pickLocation])
+  
   return (
     <View>
       <StatusBar style="light" backgroundColor="#000" />
@@ -126,16 +167,19 @@ const Home = ({ navigation }: Props) => {
           <Pressable
             style={styles.searchInputBox}
             onPress={() => {
-              navigation.navigate("SelectPickLocation");
+              navigation.navigate("SelectPickLocation", {location, setLocation});
             }}
           >
             <Image
               style={styles.greenDot}
               source={require("../../../assets/green-dot.png")}
             />
-            <Text style={{ fontSize: 15, marginStart: 10, color: "#424242" }}>
-              Search Pickup
-            </Text>
+            {location === null ?
+              <ActivityIndicator style={{marginStart: 10, marginRight: 10}} size="small" color="#000" /> :
+              <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 15, marginStart: 10, color: "#424242", }}>
+                { pickAddress !== null ? pickAddress : "Search Pickup" }
+              </Text>
+            }
           </Pressable>
           <Pressable
             style={styles.searchProfilebutton}
@@ -152,58 +196,56 @@ const Home = ({ navigation }: Props) => {
         <View style={styles.MapViewContainer}>
           <MapView
             provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              region={{
-                latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
-                longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
-                latitudeDelta: Math.abs( lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
-                longitudeDelta: Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
-              }}
-              customMapStyle={mapStyle}
-              // maxZoomLevel={15}
-              minZoomLevel={10}
-              maxDelta={0.08}
-            >
-              <Polyline
-                coordinates={[
-                  {
-                    latitude: lati !== null ? lati : 30.742162,
-                    longitude: longi !== null ? longi : 76.778599,
-                  },
-                  { latitude: 30.742162, longitude: 76.778599 },
-                ]}
-                strokeWidth={3}
-                strokeColor="white"
-              />
+            style={styles.map}
+            region={{
+              latitude: lati !== null ? (lati + 30.742162) / 2 : 30.742162,
+              longitude: longi !== null ? (longi + 76.778599) / 2 : 76.778599,
+              latitudeDelta:
+                Math.abs(lati !== null ? lati - 30.742162 : 30.742162) + 0.05,
+              longitudeDelta:
+                Math.abs(longi !== null ? longi - 76.778599 : 76.778599) + 0.05,
+            }}
+            customMapStyle={mapStyle}
+            // maxZoomLevel={15}
+            minZoomLevel={10}
+            maxDelta={0.08}
+          >
+            <Polyline
+              coordinates={markerRoutes}
+              strokeWidth={3}
+              strokeColor="white"
+            />
 
-              <Marker
-                key={1}
-                coordinate={{ latitude: lati !== null ? lati : 30.742162,
-                  longitude: longi !== null ? longi : 76.778599, }}
-                title={"Demo"}
-                description={"Demo For Testing"}
-                icon={require("../../../assets/carpin1.png")}
-                rotation={heading}
-              />
-              <Marker
-                key={2}
-                coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
-                title={"Demo"}
-                description={"Demo For Testing"}
-                // image={require('../../../assets/carpin1.png')}
-                // rotation={heading}
-              />
-            </MapView>
+            <Marker
+              key={1}
+              coordinate={{
+                latitude: lati !== null ? lati : 30.742162,
+                longitude: longi !== null ? longi : 76.778599,
+              }}
+              title={"Demo"}
+              description={"Demo For Testing"}
+              icon={require("../../../assets/carpin1.png")}
+              rotation={heading}
+            />
+            <Marker
+              key={2}
+              coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
+              title={"Demo"}
+              description={"Demo For Testing"}
+              // image={require('../../../assets/carpin1.png')}
+              // rotation={heading}
+            />
+          </MapView>
         </View>
-        
+
         <View style={styles.sliderBox}>
           <FlatList
             data={sliderData}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => (
+            renderItem={({ item, index }) =>
               renderSliderItem({ item, index }) // Assuming renderSliderItem is your rendering function
-            )}
+            }
           />
         </View>
 
@@ -226,30 +268,32 @@ const Home = ({ navigation }: Props) => {
               </Text>
             </Pressable>
           </View>
-          {recentLocationsData && recentLocationsData.length ? recentLocationsData.map((item: any, index : number) => { 
-            return (
-              <View key={index} style={{ height: 40 }}>
-              <Pressable
-                style={[
-                  styles.recentLocation,
-                  index === recentLocationsData.length - 1 && {
-                    borderBottomWidth: 0,
-                  },
-                ]}
-              >
-                <Image
-                  style={{ width: 16, height: 22 }}
-                  source={require("../../../assets/location.png")}
-                />
-                <Text style={{ fontSize: 14, marginStart: 20 }}>
-                  {item.location}
-                </Text>
-              </Pressable>
-              </View>
-            )
-          }) : ("Loading...")}
+          {recentLocationsData && recentLocationsData.length
+            ? recentLocationsData.map((item: any, index: number) => {
+                return (
+                  <View key={index} style={{ height: 40 }}>
+                    <Pressable
+                      style={[
+                        styles.recentLocation,
+                        index === recentLocationsData.length - 1 && {
+                          borderBottomWidth: 0,
+                        },
+                      ]}
+                    >
+                      <Image
+                        style={{ width: 16, height: 22 }}
+                        source={require("../../../assets/location.png")}
+                      />
+                      <Text style={{ fontSize: 14, marginStart: 20 }}>
+                        {item.location}
+                      </Text>
+                    </Pressable>
+                  </View>
+                );
+              })
+            : "Loading..."}
         </View>
-        
+
         <View style={styles.inviteWrap}>
           <View>
             <Text style={styles.inviteHeading}>invite your friends to </Text>
