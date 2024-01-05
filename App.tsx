@@ -12,6 +12,8 @@ import History from "./src/Components/History/History";
 import SelectDestLocation from "./src/Components/SelectDestLocation/SelectDestLocation";
 import FullMapView from "./src/Components/MapView/FullMapView";
 import { MaterialIcons } from "@expo/vector-icons";
+import About from "./src/Components/About/About";
+import InviteFriend from "./src/Components/InviteFriend/InviteFriend";
 
 const Drawer = createDrawerNavigator();
 
@@ -101,6 +103,16 @@ export default function App() {
           }}
         />
         <Drawer.Screen
+          name="InviteFriend"
+          component={InviteFriend}
+          options={{
+            drawerItemStyle: {
+              display: "none",
+            },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
           name="History"
           component={History}
           options={{
@@ -143,8 +155,8 @@ export default function App() {
           }}
         />
         <Drawer.Screen
-          name="about"
-          component={History}
+          name="About"
+          component={About}
           options={{
             headerShown: false,
             drawerIcon: ({ focused, size }) => (
