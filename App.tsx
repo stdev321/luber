@@ -14,95 +14,141 @@ import FullMapView from "./src/Components/MapView/FullMapView";
 import { MaterialIcons } from "@expo/vector-icons";
 import About from "./src/Components/About/About";
 import InviteFriend from "./src/Components/InviteFriend/InviteFriend";
+import { LocationProvider } from "./src/context/LocationContext";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator>
-        <Drawer.Screen
-          name="Front"
-          component={Front}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-            drawerStyle: { width: 0, display: "none" },
-          }}
-        />
-        <Drawer.Screen
-          name="Login"
-          component={Login}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-            drawerStyle: { width: 0, display: "none" },
-          }}
-        />
-        <Drawer.Screen
-          name="Register"
-          component={Register}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-            drawerStyle: { width: 0, display: "none" },
-          }}
-        />
-        <Drawer.Screen
-          name="Home"
-          component={Home}
-          options={{ drawerItemStyle: {
-            display: "none",
-          },
-          headerShown: false }}
-        />
-        <Drawer.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="SelectPickLocation"
-          component={SelectPickLocation}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="SelectDestLocation"
-          component={SelectDestLocation}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="MapView"
-          component={FullMapView}
-          options={{
-            drawerItemStyle: {
-              display: "none",
-            },
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
+      <LocationProvider>
+        <Drawer.Navigator>
+          <Drawer.Screen
+            name="Front"
+            component={Front}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+              drawerStyle: { width: 0, display: "none" },
+            }}
+          />
+          <Drawer.Screen
+            name="Login"
+            component={Login}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+              drawerStyle: { width: 0, display: "none" },
+            }}
+          />
+          <Drawer.Screen
+            name="Register"
+            component={Register}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+              drawerStyle: { width: 0, display: "none" },
+            }}
+          />
+          <Drawer.Screen
+            name="Home"
+            component={Home}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+            }}
+          />
+          <Drawer.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+            }}
+          />
+          <Drawer.Screen
+            name="SelectPickLocation"
+            component={SelectPickLocation}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+            }}
+          />
+          <Drawer.Screen
+            name="SelectDestLocation"
+            component={SelectDestLocation}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+            }}
+          />
+          <Drawer.Screen
+            name="MapView"
+            component={FullMapView}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerShown: false,
+            }}
+          />
+          <Drawer.Screen
+            name="History"
+            component={History}
+            options={{
+              headerShown: false,
+              drawerIcon: ({ focused, size }) => (
+                <MaterialIcons
+                  name="history"
+                  size={size}
+                  color={focused ? "#000" : "green"}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Payment"
+            component={History}
+            options={{
+              headerShown: false,
+              drawerIcon: ({ focused, size }) => (
+                <MaterialIcons
+                  name="payment"
+                  size={size}
+                  color={focused ? "green" : "#000"}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Support"
+            component={History}
+            options={{
+              headerShown: false,
+              drawerIcon: ({ focused, size }) => (
+                <MaterialIcons
+                  name="support"
+                  size={size}
+                  color={focused ? "green" : "#000"}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
           name="InviteFriend"
           component={InviteFriend}
           options={{
@@ -112,63 +158,22 @@ export default function App() {
             headerShown: false,
           }}
         />
-        <Drawer.Screen
-          name="History"
-          component={History}
-          options={{
-            headerShown: false,
-            drawerIcon: ({ focused, size }) => (
-              <MaterialIcons
-                name="history"
-                size={size}
-                color={focused ? "#000" : "green"}
-              />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="Payment"
-          component={History}
-          options={{
-            headerShown: false,
-            drawerIcon: ({ focused, size }) => (
-              <MaterialIcons
-                name="payment"
-                size={size}
-                color={focused ? "green" : "#000"}
-              />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="Support"
-          component={History}
-          options={{
-            headerShown: false,
-            drawerIcon: ({ focused, size }) => (
-              <MaterialIcons
-                name="support"
-                size={size}
-                color={focused ? "green" : "#000"}
-              />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="About"
-          component={About}
-          options={{
-            headerShown: false,
-            drawerIcon: ({ focused, size }) => (
-              <MaterialIcons
-                name="info-outline"
-                size={size}
-                color={focused ? "green" : "#000"}
-              />
-            ),
-          }}
-        />
-      </Drawer.Navigator>
+          <Drawer.Screen
+            name="About"
+            component={About}
+            options={{
+              headerShown: false,
+              drawerIcon: ({ focused, size }) => (
+                <MaterialIcons
+                  name="info-outline"
+                  size={size}
+                  color={focused ? "green" : "#000"}
+                />
+              ),
+            }}
+          />
+        </Drawer.Navigator>
+      </LocationProvider>
     </NavigationContainer>
   );
 }

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  ScrollView,
   Text,
   View,
   Pressable,
   Image,
   FlatList,
-  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import { mapStyle } from "../../GlobalStyle/MapStyle";
@@ -18,13 +16,14 @@ import { StatusBar } from "expo-status-bar";
 import { Modal } from "react-native";
 import { getRoutCoordinate } from "../../Helper/CalculateRoute";
 import { reverseGeocode } from "../../Helper/Geocodding";
+import { useLocation } from '../../context/LocationContext'
 
 interface Props {
   navigation: any;
 }
 
 const Home = ({ navigation }: Props) => {
-  const [location, setLocation] = useState<any>(null);
+  const { location, setGlobalLocation } = useLocation();
   const [pickLocation, setPickLocation] = useState<any>(null);
   const [destLocation, setDestLocation] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<any>(null);
@@ -35,7 +34,7 @@ const Home = ({ navigation }: Props) => {
   const [heading, setHeading] = useState(1);
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [markerRoutes, setMarkerRoutes] = useState<any>([])
+  const [markerRoutes, setMarkerRoutes] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
@@ -47,13 +46,13 @@ const Home = ({ navigation }: Props) => {
 
       // Get the initial location
       let initialLocation = await Location.getCurrentPositionAsync({});
-      setLocation(initialLocation);
+      setGlobalLocation(initialLocation);
 
       // Subscribe to location updates
       const locationSubscription = await Location.watchPositionAsync(
         { accuracy: Location.Accuracy.High, timeInterval: 1000 },
         (newLocation: any) => {
-          setLocation(newLocation);
+          setGlobalLocation(newLocation);
           setLati(newLocation.coords.latitude);
           setLongi(newLocation.coords.longitude);
           setHeading(newLocation.coords.heading);
@@ -120,37 +119,37 @@ const Home = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (location !== null) {
-      const getCoor = async () => { 
+      const getCoor = async () => {
         const getRoute = await getRoutCoordinate({
           origin: location.coords,
           destination: { latitude: 30.742162, longitude: 76.778599 },
         });
-        setMarkerRoutes(getRoute)
-      }
-      getCoor()
+        setMarkerRoutes(getRoute);
+      };
+      getCoor();
     }
   }, [location]);
 
   useEffect(() => {
-    if (location !== null && pickAddress === null) { 
-      const getAddress =async () => {
-        const getAdd = await reverseGeocode(location.coords)
-        setPickAddress(getAdd)
-      }
-      getAddress()
+    if (location !== null && pickAddress === null) {
+      const getAddress = async () => {
+        const getAdd = await reverseGeocode(location.coords);
+        setPickAddress(getAdd);
+      };
+      getAddress();
     }
-  }, [location])
+  }, [location]);
 
   useEffect(() => {
-    if (pickLocation !== null) { 
-      const getAddress =async () => {
-        const getAdd = await reverseGeocode(pickLocation.coords)
-        setPickAddress(getAdd)
-      }
-      getAddress()
+    if (pickLocation !== null) {
+      const getAddress = async () => {
+        const getAdd = await reverseGeocode(pickLocation.coords);
+        setPickAddress(getAdd);
+      };
+      getAddress();
     }
-  }, [pickLocation])
-  
+  }, [pickLocation]);
+
   return (
     <View>
       <StatusBar style="light" backgroundColor="#000" />
@@ -167,19 +166,28 @@ const Home = ({ navigation }: Props) => {
           <Pressable
             style={styles.searchInputBox}
             onPress={() => {
-              navigation.navigate("SelectPickLocation", {location, setLocation});
+              navigation.navigate("SelectPickLocation");
             }}
           >
             <Image
               style={styles.greenDot}
               source={require("../../../assets/green-dot.png")}
             />
-            {location === null ?
-              <ActivityIndicator style={{marginStart: 10, marginRight: 10}} size="small" color="#000" /> :
-              <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 15, marginStart: 10, color: "#424242", }}>
-                { pickAddress !== null ? pickAddress : "Search Pickup" }
+            {location === null ? (
+              <ActivityIndicator
+                style={{ marginStart: 10, marginRight: 10 }}
+                size="small"
+                color="#000"
+              />
+            ) : (
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={{ fontSize: 15, marginStart: 10, color: "#424242" }}
+              >
+                {pickAddress !== null ? pickAddress : "Search Pickup"}
               </Text>
-            }
+            )}
           </Pressable>
           <Pressable
             style={styles.searchProfilebutton}
@@ -243,8 +251,8 @@ const Home = ({ navigation }: Props) => {
             data={sliderData}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) =>
-              renderSliderItem({ item, index }) // Assuming renderSliderItem is your rendering function
+            renderItem={
+              ({ item, index }) => renderSliderItem({ item, index }) // Assuming renderSliderItem is your rendering function
             }
           />
         </View>
