@@ -1,22 +1,19 @@
 import React from "react";
-import { Pressable, ScrollView, View, Image, Text } from "react-native";
+import { Pressable, View, Image, Text } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
-import IconI from "react-native-vector-icons/Ionicons";
 import { styles } from "./SelectPickLocationStyle";
 import { StatusBar } from "expo-status-bar";
-import TextField from "../../Atoms/TextInput/TextField";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { useLocation } from "../../context/LocationContext";
 interface Props {
   navigation: any;
   route: any;
 }
 
 const SelectPickLocation = ({ navigation, route }: Props) => {
-  const { location, setLocation } = route.params;
-  console.log(location);
-
+  const { location } = useLocation();
+  console.log({ location })
   return (
     <View>
       <StatusBar />
@@ -46,7 +43,7 @@ const SelectPickLocation = ({ navigation, route }: Props) => {
               style={styles.inputBox}
             /> */}
             <GooglePlacesAutocomplete
-              placeholder="Search"
+              placeholder="Search pickup address"
               onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
                 console.log(data, details);
