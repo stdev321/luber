@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 import {
   Pressable,
-  ScrollView,
   View,
   Image,
   Text,
-  KeyboardAvoidingView,
-  Platform,
   Modal,
   TouchableWithoutFeedback,
+  Share,
 } from "react-native";
-import Icon from "react-native-vector-icons/Entypo";
-import IconI from "react-native-vector-icons/Ionicons";
 import { styles } from "./InviteFriendStyle";
 import { StatusBar } from "expo-status-bar";
 import TextField from "../../Atoms/TextInput/TextField";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { MaterialIcons } from "@expo/vector-icons";
-// import ModalContent from "./ModalContent";
+// import Clipboard from "@react-native-clipboard/clipboard";
+import { Clipboard } from "react-native";
+import Toast from "react-native-toast-message";
 
 interface Props {
   navigation: any;
@@ -30,7 +28,40 @@ const InviteFriend = ({ navigation, route }: Props) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  
+
+  const copyToClipboard = () => {
+    const referralCode = "GGG7GWU";
+    Clipboard.setString(referralCode);
+    showSuccessMessage();
+  };
+
+  const showSuccessMessage = () => {
+    Toast.show({
+      type: "success",
+      text1: "Referral Code Copied!",
+      position: "bottom",
+      visibilityTime: 2000,
+    });
+  };
+
+  const shareCode = () => {
+    const referralCode = "GGG7GWU"; // Replace with your actual referral code
+
+    Share.share({
+      message: `Use my referral code ${referralCode} to sign up on Luber and get amazing discounts!`,
+    })
+      .then((result) => {
+        if (result.action === Share.sharedAction) {
+          // Code shared successfully
+          console.log("Shared successfully");
+        } else if (result.action === Share.dismissedAction) {
+          // Share was dismissed
+          console.log("Share dismissed");
+        }
+      })
+      .catch((error) => console.error("Error sharing:", error));
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar />
@@ -82,7 +113,12 @@ const InviteFriend = ({ navigation, route }: Props) => {
                   <MaterialIcons
                     name="check"
                     size={17}
-                    style={{ color: "green", fontWeight: "800", fontSize: 18, marginTop:10 }}
+                    style={{
+                      color: "green",
+                      fontWeight: "800",
+                      fontSize: 18,
+                      marginTop: 10,
+                    }}
                   />
                   <Text style={styles.modalText}>
                     Share the code below or ask them to enter it after they sign
@@ -93,7 +129,12 @@ const InviteFriend = ({ navigation, route }: Props) => {
                   <MaterialIcons
                     name="check"
                     size={17}
-                    style={{ color: "green", fontWeight: "800", fontSize: 18, marginTop:10 }}
+                    style={{
+                      color: "green",
+                      fontWeight: "800",
+                      fontSize: 18,
+                      marginTop: 10,
+                    }}
                   />
                   <Text style={styles.modalText}>
                     For your friend to reveive their coupon, ensure that they
@@ -115,9 +156,18 @@ const InviteFriend = ({ navigation, route }: Props) => {
         <Text style={{ fontSize: 17, fontWeight: "500", marginBottom: 20 }}>
           Your Invites
         </Text>
-        <Text style={{ fontSize: 15, color: "#a1a1a1" }}>
-          Please try a different address or locate on map
-        </Text>
+        <View style={styles.inviteInnerWrap}>
+          <View style={styles.inviteInnerContent}>
+            <Text style={styles.inviteNumber}>₹0</Text>
+            <Text style={styles.inviteInnerText}>Earned</Text>
+          </View>
+          <View style={styles.innerBorder}>
+          </View>
+          <View style={styles.inviteInnerContent}>
+            <Text style={styles.inviteNumber}>₹0</Text>
+            <Text style={styles.inviteInnerText}>Pending</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.referralWrap}>
@@ -125,18 +175,23 @@ const InviteFriend = ({ navigation, route }: Props) => {
             <Text style={styles.referText}>Your referral code</Text>
           </View>
           <View>
-            <Text style={styles.code}>
-              GGG7GWU{" "}
-              <MaterialIcons
-                name="content-copy"
-                size={17}
-                style={{ color: "#919191" }}
-              />
-            </Text>
+            <Pressable
+              // style={styles.codeContainer}
+              onPress={() => copyToClipboard()}
+            >
+              <Text style={styles.code}>
+                GGG7GWU{" "}
+                <MaterialIcons
+                  name="content-copy"
+                  size={17}
+                  style={{ color: "#919191" }}
+                />
+              </Text>
+            </Pressable>
           </View>
         </View>
         <View>
-          <Pressable style={styles.bottomButton}>
+          <Pressable style={styles.bottomButton} onPress={() => shareCode()}>
             <Text style={styles.btnText}>Share Code</Text>
           </Pressable>
         </View>
