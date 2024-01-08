@@ -6,7 +6,8 @@ export const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
     backgroundColor:'#fff',
-    height:'100%'
+    height:'100%',
+    // justifyContent:'space-around'
     // alignItems: "center",
   },
   demo: {
@@ -38,6 +39,9 @@ export const styles = StyleSheet.create({
   greenDot: {
     width: 6,
     height: 6,
+    position:'absolute',
+    left:17,
+    top:22,
   },
   searchInput: {
     width: width -25,
@@ -64,10 +68,10 @@ export const styles = StyleSheet.create({
   mainContainer: {
     paddingHorizontal: 20,
     paddingVertical: 40,
-    height: 282,
   },
   bottomContainer: {
     // width: 400,
+    marginBottom:5,
     flexDirection: "row",
     paddingVertical:6,
     paddingHorizontal: 9,
@@ -82,6 +86,8 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,  
+    position:'relative',
+    bottom: 0,
   },
   bottomButtons: {
     padding: 5,

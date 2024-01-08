@@ -310,11 +310,13 @@ const Home = ({ navigation }: Props) => {
               <Text style={styles.inviteCode}>GGG7GWU</Text>
             </View>
             {/* <Text style={styles.shareCode}>Share invite code</Text> */}
-            <Pressable onPress={() => setIsModalVisible(true)}>
+            <Pressable onPress={() => {
+              navigation.navigate("InviteFriend");
+            }}>
               <Text style={styles.shareCode}>Share invite code</Text>
             </Pressable>
           </View>
-          <Modal
+          {/* <Modal
             animationType="fade"
             transparent={true}
             visible={isModalVisible}
@@ -334,7 +336,7 @@ const Home = ({ navigation }: Props) => {
                 </Pressable>
               </View>
             </View>
-          </Modal>
+          </Modal> */}
           <View>
             <Image
               style={styles.inviteImg}
