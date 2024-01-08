@@ -83,6 +83,31 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 40,
   },
+  inviteInnerWrap:{
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-around',
+    padding:20,
+    borderWidth:1,
+    borderRadius:7,
+    borderColor:'#ccc'
+  },
+  innerBorder:{
+    borderRightWidth:1,
+    borderColor:'#ccc',
+    height:'100%'
+  },
+  inviteNumber:{
+    fontSize:24,
+    fontWeight:'600',
+  },
+  inviteInnerText:{
+    color:'#aaa'
+  },
+  inviteInnerContent:{
+    // textAlign:'center',
+    alignItems:'center'
+  },
   bottomContainer: {
     position: "relative",
     bottom: 20,
@@ -114,7 +139,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   modalText: {
-    paddingVertical: 10,
+    paddingVertical: 8,
+    paddingHorizontal:15,
+    paddingBottom:15,
     color: "#919191",
   },
   textCheck: {
@@ -122,7 +149,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    columnGap:10,
+    columnGap:5,
   },
   modalButton:{
     justifyContent: "center",
