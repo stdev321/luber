@@ -11,4 +11,14 @@ export const reverseGeocode = async (region: any) => {
       console.error('Error fetching address:', error);
     }
 };
-  
+
+// Search by address
+export const getGeocodeData = async (address: string) => {
+  try {
+    const response = await Geocoder.from(address);
+    return response.results[0].geometry.location
+  } catch (error: any) {
+    console.log('Error fetching coordinates: ', error.message);
+  }
+}
+
