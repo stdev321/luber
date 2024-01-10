@@ -15,6 +15,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import About from "./src/Components/About/About";
 import InviteFriend from "./src/Components/InviteFriend/InviteFriend";
 import { LocationProvider } from "./src/context/LocationContext";
+import Payment from "./src/Components/Payment/Payment";
 
 const Drawer = createDrawerNavigator();
 
@@ -122,7 +123,7 @@ export default function App() {
           />
           <Drawer.Screen
             name="Payment"
-            component={History}
+            component={Payment}
             options={{
               headerShown: false,
               drawerIcon: ({ focused, size }) => (
