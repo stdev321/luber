@@ -24,8 +24,8 @@ const Item = ({ label, value }: ItemProps) => (
   <Pressable onPress={() => console.log("clicked")}>
     <View style={styles.item}>
       <View style={styles.itemContent}>
-        {value && <Text style={styles.text}>{value}</Text>}
         <Text style={styles.placeHolderText}>{label}</Text>
+        {value && <Text style={styles.text}>{value}</Text>}
       </View>
     </View>
   </Pressable>
