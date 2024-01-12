@@ -72,11 +72,9 @@ const Login = ({ navigation }: Props) => {
 
   useEffect(() => {
     startAnimation();
+    // TODO: Remove this after development
+    navigation.navigate('Home');
   }, []);
-
-  useFocusEffect(() => {
-    startAnimation();
-  });
 
   const containerStyle = useAnimatedStyle(() => {
     return {
@@ -108,12 +106,12 @@ const Login = ({ navigation }: Props) => {
           <TextField
             placeholder="Email"
             onChange={handleEmailChange}
-            value={email}
+            value={'email'}
           />
           <TextField
             placeholder="Password"
             onChange={handlePasswordChange}
-            value={password}
+            value={'password'}
           />
           <Pressable
             style={[
