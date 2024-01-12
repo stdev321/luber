@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -19,24 +19,23 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { useLocation } from "../../context/LocationContext";
 import { getGeocodeData } from "../../Helper/Geocodding";
+import GooglePlacesSelect from "./../../Atoms/GoogleSearch/GoogleSearch";
 interface Props {
   navigation: any;
   route: any;
 }
 
 const SelectPickLocation = ({ navigation, route }: Props) => {
+  const [predictions, setPredictions] = useState([]);
   const { pickLocation, setGlobalPickLocation } = useLocation();
   console.log({ pickLocation });
 
-  const handleDestination = async (
-    data: GooglePlaceData,
-    details: GooglePlaceDetail | null = null
-  ) => {
+  const handleDestination = async (value: string) => {
     // 'details' is provided when fetchDetails = true
-    const response = await getGeocodeData(data.description);
+    const response = await getGeocodeData(value);
     if (response) {
       setGlobalPickLocation({
-        address: data.description,
+        address: value,
         location: {
           coords: {
             latitude: response.lat,
@@ -50,8 +49,14 @@ const SelectPickLocation = ({ navigation, route }: Props) => {
           timestamp: new Date().getTime(),
         },
       });
+      navigation.navigate("Home");
     }
   };
+
+  // const handlePrediction = (data, details) => {
+  //   // Update the predictions state when a prediction is received
+  //   setPredictions(data);
+  // };
 
   return (
     <KeyboardAvoidingView
@@ -74,39 +79,10 @@ const SelectPickLocation = ({ navigation, route }: Props) => {
           </Pressable>
           <Text style={styles.pickUpText}>Pick up</Text>
         </View>
-
-        <View style={styles.topSearch}>
-          <View style={styles.searchInput}>
-            <Image
-              style={styles.greenDot}
-              source={require("../../../assets/green-dot.png")}
-            />
-            <GooglePlacesAutocomplete
-              placeholder="Search"
-              onPress={handleDestination}
-              query={{
-                key: "AIzaSyAUrZdfSdHFZbz-kAhi9sj2erP1dQvZD5E",
-                language: "en",
-              }}
-              styles={{
-                listView: {
-                  zIndex: 999999,
-                  // height: 10,
-                },
-              }}
-            />
-          </View>
-        </View>
-        <ScrollView>
-          <View style={styles.mainContainer}>
-            <Text style={{ fontSize: 20, fontWeight: "600", marginBottom: 20 }}>
-              Location not found
-            </Text>
-            <Text style={{ fontSize: 15, color: "#a1a1a1" }}>
-              Please try a different address or locate on map
-            </Text>
-          </View>
-        </ScrollView>
+        <GooglePlacesSelect
+          value={pickLocation?.address}
+          onChange={handleDestination}
+        />
         <View style={styles.bottomContainer}>
           <Pressable style={styles.bottomButtons}>
             <MaterialIcons
