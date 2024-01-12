@@ -16,21 +16,25 @@ import { StatusBar } from "expo-status-bar";
 import { Modal } from "react-native";
 import { getRoutCoordinate } from "../../Helper/CalculateRoute";
 import { reverseGeocode } from "../../Helper/Geocodding";
-import { useLocation } from '../../context/LocationContext'
+import { useLocation } from "../../context/LocationContext";
 
 interface Props {
   navigation: any;
 }
 
 const Home = ({ navigation }: Props) => {
-  const { location, setGlobalLocation } = useLocation();
-  const [pickLocation, setPickLocation] = useState<any>(null);
-  const [destLocation, setDestLocation] = useState<any>(null);
+  const {
+    location,
+    pickLocation,
+    destinationLocation,
+    setGlobalLocation,
+    setGlobalPickLocation,
+  } = useLocation();
   const [errorMsg, setErrorMsg] = useState<any>(null);
   const [pickAddress, setPickAddress] = useState<any>(null);
   const [destAddress, setDestAddress] = useState<any>(null);
-  const [lati, setLati] = useState(null);
-  const [longi, setLongi] = useState(null);
+  const [lati, setLati] = useState(0);
+  const [longi, setLongi] = useState(0);
   const [heading, setHeading] = useState(1);
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -52,10 +56,26 @@ const Home = ({ navigation }: Props) => {
       const locationSubscription = await Location.watchPositionAsync(
         { accuracy: Location.Accuracy.High, timeInterval: 1000 },
         (newLocation: any) => {
+          console.log(newLocation);
           setGlobalLocation(newLocation);
           setLati(newLocation.coords.latitude);
           setLongi(newLocation.coords.longitude);
           setHeading(newLocation.coords.heading);
+          setGlobalPickLocation({
+            // address: newLocation.coords.heading,
+            location: {
+              coords: {
+                latitude: newLocation.coords.latitude,
+                longitude: newLocation.coords.longitude,
+                altitude: 0, // You can set these values based on your use case
+                accuracy: 0,
+                altitudeAccuracy: 0,
+                heading: 0,
+                speed: 0,
+              },
+              timestamp: new Date().getTime(),
+            },
+          });
         }
       );
 
@@ -118,17 +138,17 @@ const Home = ({ navigation }: Props) => {
   };
 
   useEffect(() => {
-    if (location !== null) {
+    if (pickLocation?.location && destinationLocation?.location) {
       const getCoor = async () => {
         const getRoute = await getRoutCoordinate({
-          origin: location.coords,
-          destination: { latitude: 30.742162, longitude: 76.778599 },
+          origin: pickLocation?.location.coords,
+          destination: destinationLocation?.location.coords,
         });
         setMarkerRoutes(getRoute);
       };
       getCoor();
     }
-  }, [location]);
+  }, [pickLocation?.location, destinationLocation?.location]);
 
   useEffect(() => {
     if (location !== null && pickAddress === null) {
@@ -141,14 +161,14 @@ const Home = ({ navigation }: Props) => {
   }, [location]);
 
   useEffect(() => {
-    if (pickLocation !== null) {
+    if (pickLocation?.location) {
       const getAddress = async () => {
-        const getAdd = await reverseGeocode(pickLocation.coords);
+        const getAdd = await reverseGeocode(pickLocation?.location.coords);
         setPickAddress(getAdd);
       };
       getAddress();
     }
-  }, [pickLocation]);
+  }, [pickLocation?.location]);
 
   return (
     <View>
@@ -215,6 +235,7 @@ const Home = ({ navigation }: Props) => {
             }}
             customMapStyle={mapStyle}
             // maxZoomLevel={15}
+            showsUserLocation={true}
             minZoomLevel={10}
             maxDelta={0.08}
           >
@@ -227,22 +248,31 @@ const Home = ({ navigation }: Props) => {
             <Marker
               key={1}
               coordinate={{
-                latitude: lati !== null ? lati : 30.742162,
-                longitude: longi !== null ? longi : 76.778599,
+                latitude: pickLocation?.location
+                  ? pickLocation?.location.coords.latitude
+                  : lati,
+                longitude: pickLocation?.location.coords.longitude
+                  ? pickLocation?.location.coords.longitude
+                  : longi,
               }}
-              title={"Demo"}
-              description={"Demo For Testing"}
-              icon={require("../../../assets/carpin1.png")}
+              title={pickLocation?.address}
+              description={pickLocation?.address}
+              // icon={require("../../../assets/carpin1.png")}
               rotation={heading}
             />
-            <Marker
-              key={2}
-              coordinate={{ latitude: 30.742162, longitude: 76.778599 }}
-              title={"Demo"}
-              description={"Demo For Testing"}
-              // image={require('../../../assets/carpin1.png')}
-              // rotation={heading}
-            />
+            {destinationLocation?.location && (
+              <Marker
+                key={2}
+                coordinate={{
+                  latitude: destinationLocation.location.coords.latitude,
+                  longitude: destinationLocation.location.coords.longitude,
+                }}
+                title={destinationLocation.address}
+                description={destinationLocation.address}
+                // image={require('../../../assets/carpin1.png')}
+                // rotation={heading}
+              />
+            )}
           </MapView>
         </View>
 
@@ -272,7 +302,9 @@ const Home = ({ navigation }: Props) => {
               <Text
                 style={{ fontSize: 19, marginStart: 20, fontWeight: "500" }}
               >
-                Search Destination
+                {destinationLocation?.address
+                  ? destinationLocation.address
+                  : "Search Destination"}
               </Text>
             </Pressable>
           </View>
@@ -310,9 +342,11 @@ const Home = ({ navigation }: Props) => {
               <Text style={styles.inviteCode}>GGG7GWU</Text>
             </View>
             {/* <Text style={styles.shareCode}>Share invite code</Text> */}
-            <Pressable onPress={() => {
-              navigation.navigate("InviteFriend");
-            }}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("InviteFriend");
+              }}
+            >
               <Text style={styles.shareCode}>Share invite code</Text>
             </Pressable>
           </View>

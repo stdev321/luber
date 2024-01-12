@@ -12,6 +12,7 @@ import {
 } from "react-native-google-places-autocomplete";
 import { useLocation } from "../../context/LocationContext";
 import { getGeocodeData } from "../../Helper/Geocodding";
+import GooglePlacesSelect from './../../Atoms/GoogleSearch/GoogleSearch';
 
 interface Props {
   navigation: any;
@@ -27,19 +28,17 @@ const SelectDestLocation = ({ navigation }: Props) => {
       destinationLocation &&
       destinationLocation.address
     ) {
-      console.log(fieldRef.current.setAddressText(destinationLocation.address));
+      fieldRef.current.setAddressText(destinationLocation.address);
     }
   }, [destinationLocation]);
 
   const handleDestination = async (
-    data: GooglePlaceData,
-    details: GooglePlaceDetail | null = null
-  ) => {
+    value: string) => {
     // 'details' is provided when fetchDetails = true
-    const response = await getGeocodeData(data.description);
+    const response = await getGeocodeData(value);
     if (response) {
       setGlobalDestLocation({
-        address: data.description,
+        address: value,
         location: {
           coords: {
             latitude: response.lat,
@@ -53,6 +52,7 @@ const SelectDestLocation = ({ navigation }: Props) => {
           timestamp: new Date().getTime(),
         },
       });
+      navigation.navigate('Home');
     }
   };
 
@@ -74,44 +74,10 @@ const SelectDestLocation = ({ navigation }: Props) => {
           </Pressable>
           <Text style={styles.pickUpText}>Destination</Text>
         </View>
-        <View style={styles.topSearch}>
-          <View style={styles.searchInput}>
-            <Image
-              style={styles.greenDot}
-              source={require("../../../assets/green-dot.png")}
-            />
-            {/* <TextField
-              placeholder="Search Pickup Location"
-              style={styles.inputBox}
-            /> */}
-            <GooglePlacesAutocomplete
-              ref={fieldRef}
-              placeholder="Search destination address"
-              onPress={handleDestination}
-              query={{
-                key: "AIzaSyAUrZdfSdHFZbz-kAhi9sj2erP1dQvZD5E",
-                language: "en",
-              }}
-              styles={{
-                listView: {
-                  zIndex: 999999,
-                  // height: 10,
-                },
-              }}
-            />
-          </View>
-        </View>
-
-        <ScrollView>
-          <View style={styles.mainContainer}>
-            <Text style={{ fontSize: 20, fontWeight: "600", marginBottom: 20 }}>
-              Location not found
-            </Text>
-            <Text style={{ fontSize: 15, color: "#a1a1a1" }}>
-              Please try a different address or locate on map
-            </Text>
-          </View>
-        </ScrollView>
+        <GooglePlacesSelect
+          value={destinationLocation?.address}
+          onChange={handleDestination}
+        />
         <View style={styles.bottomContainer}>
           <Pressable style={styles.bottomButtons}>
             <MaterialIcons
