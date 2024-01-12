@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   subHeading: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "600",
     marginBottom: 20,
   },
@@ -29,6 +29,16 @@ export const styles = StyleSheet.create({
   },
   innerText: {
     fontSize: 16,
+  },
+  underlineText:{
+    borderBottomWidth:1,
+    borderBottomColor:'#e7e7e7',
+    paddingBottom:10,
+  },
+  innerRowLine:{
+    borderBottomWidth:1,
+    borderBottomColor:'#e7e7e7',
+    marginBottom:10,
   },
   innerRowWrap:{
     flexDirection: "row",
@@ -54,17 +64,25 @@ export const styles = StyleSheet.create({
   },
   cashMoldalContainer: {
     flex: 1,
-    display:'flex',
-    height:'100%',
+    // display:'flex',
+    // height:'100%',
     justifyContent: "flex-end",
-    alignItems: "center",
-    marginBottom: 0,
+    // alignItems: "center",
+    // marginBottom: 0,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   cashModalContent:{
     backgroundColor: "#fff",
     padding: 20,
-    paddingTop: 30,
+    paddingTop: 50,
+    paddingBottom:200,
+    height:'100%',
+  },
+  cardModalContent:{
+    backgroundColor: "#fff",
+    padding: 20,
+    paddingTop: 50,
+    height:'100%',
   },
   modalContent: {
     backgroundColor: "#fff",
@@ -84,7 +102,18 @@ export const styles = StyleSheet.create({
     fontSize:26,
     fontWeight:'600',
   },
+  cardModalHeading:{
+    fontSize:26,
+    fontWeight:'600',
+    marginVertical:20,
+  },
   updatedModalText:{
+    paddingVertical:20,
+    fontSize:16,
+  },
+  cashModalText:{
+    fontSize:16,
+    color:'#919191',
     paddingVertical:20,
   },
   modalButton:{
@@ -114,6 +143,19 @@ export const styles = StyleSheet.create({
     paddingBottom: 15,
     color: "#000",
     fontSize: 16,
+  },
+  cardInput:{
+    color:'#000',
+    borderBottomWidth:1,
+    borderBottomColor:'#e7e7e7',
+    padding:10,
+    marginVertical:10,
+    // marginBottom:200,
+  },
+  bottomContainer: {
+    paddingVertical:6,
+    paddingHorizontal: 9,
+    justifyContent: "space-between",
   },
   arrowWrap: {
     flexDirection: "row",

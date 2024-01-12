@@ -6,6 +6,9 @@ import {
   FlatList,
   Modal,
   TouchableWithoutFeedback,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -23,7 +26,11 @@ const Payment = ({ navigation }: Props) => {
   const [selectedUPI, setSelectedUPI] = useState<string | null>(null);
   const [isSecondModalVisible, setSecondModalVisible] = useState(false);
   const [isCashModalVisible, setCashModalVisible] = useState(false);
+  const [isCardModalVisible, setCardModalVisible] = useState(false);
   const [defaultSelection, setDefaultSelection] = useState<string | null>(null);
+
+  const [cardNumber, setCardNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -35,6 +42,10 @@ const Payment = ({ navigation }: Props) => {
 
   const toggleCashModal = () => {
     setCashModalVisible(!isCashModalVisible);
+  };
+
+  const toggleCardModal = () => {
+    setCardModalVisible(!isCardModalVisible);
   };
 
   const handleUPISelection = (upiApp: string) => {
@@ -51,7 +62,7 @@ const Payment = ({ navigation }: Props) => {
       case "Phone Pe":
         return require("../../../assets/phonepe-logo.png");
       default:
-        return require("../../../assets/upi-logo.png");
+        return "";
     }
   };
   return (
@@ -74,9 +85,9 @@ const Payment = ({ navigation }: Props) => {
         </View>
         <View style={styles.innerSec}>
           <Text style={styles.subHeading}>UPI</Text>
-          <View style={styles.innerSecWrap}>
+          <View style={[styles.innerSecWrap, styles.underlineText]}>
             <Image style={{ width: 30, height: 30 }} source={getUPIImage()} />
-            <Text style={styles.innerText}>{selectedUPI || "Select UPI"}</Text>
+            <Text style={styles.innerText}>{selectedUPI || ""}</Text>
           </View>
         </View>
         <View style={styles.innerSec}>
@@ -101,11 +112,23 @@ const Payment = ({ navigation }: Props) => {
               onPress={() => setCashModalVisible(false)}
             >
               <View style={styles.cashMoldalContainer}>
-                <View style={styles.secondModalContent}>
+                <View style={styles.cashModalContent}>
+                  <Pressable
+                    style={styles.backBtn}
+                    onPress={() => setCashModalVisible(false)}
+                  >
+                    <Image
+                      style={{ width: 25, height: 25 }}
+                      source={require("../../../assets/back.png")}
+                    />
+                  </Pressable>
                   <Text style={styles.updatedModalHeading}>Cash</Text>
-                  <Text style={styles.updatedModalText}>Please pay your driver in cash once your trip ends. The fare will be displayed on your driver's device. You can also check it on your app.</Text>
-                  <View>
-              </View>
+                  <Text style={styles.cashModalText}>
+                    Please pay your driver in cash once your trip ends. The fare
+                    will be displayed on your driver's device. You can also
+                    check it on your app.
+                  </Text>
+                  <View></View>
                 </View>
               </View>
             </TouchableWithoutFeedback>
@@ -113,7 +136,10 @@ const Payment = ({ navigation }: Props) => {
         </View>
         <View style={styles.innerSec}>
           <Text style={styles.subHeading}>Add payment method</Text>
-          <Pressable style={styles.innerRowWrap} onPress={toggleModal}>
+          <Pressable
+            style={[styles.innerRowWrap, styles.innerRowLine]}
+            onPress={toggleModal}
+          >
             <View style={styles.innerContent}>
               <Image
                 style={{ width: 40, height: 15 }}
@@ -204,17 +230,81 @@ const Payment = ({ navigation }: Props) => {
                 <View style={styles.secondModalContent}>
                   <Text style={styles.updatedModalHeading}>Payment mode</Text>
                   <Text style={styles.updatedModalHeading}>is updated</Text>
-                  <Text style={styles.updatedModalText}>{defaultSelection} is selected as your default payment mode for your upcoming rides</Text>
+                  <Text style={styles.updatedModalText}>
+                    {defaultSelection} is selected as your default payment mode
+                    for your upcoming rides
+                  </Text>
                   <View>
-                <Pressable style={styles.modalButton} onPress={toggleSecondModal}>
-                  <Text style={styles.btnText}>OK</Text>
-                </Pressable>
-              </View>
+                    <Pressable
+                      style={styles.modalButton}
+                      onPress={toggleSecondModal}
+                    >
+                      <Text style={styles.btnText}>OK</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
             </TouchableWithoutFeedback>
           </Modal>
 
+          <Pressable
+            style={[styles.innerRowWrap, styles.innerRowLine]}
+            onPress={toggleCardModal}
+          >
+            <View style={styles.innerContent}>
+              <Image
+                style={{ width: 30, height: 20 }}
+                source={require("../../../assets/credit-card.png")}
+              />
+              <Text style={styles.innerContentText}>Add Credit/Debit Card</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={16} color="#ccc" />
+          </Pressable>
+          <Modal
+            visible={isCardModalVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={() => setCardModalVisible(false)}
+          >
+            <View style={styles.cashMoldalContainer}>
+              <View style={styles.cardModalContent}>
+                <Pressable style={styles.backBtn} onPress={() => setCardModalVisible(false)}>
+                  <Image
+                    style={{ width: 25, height: 25 }}
+                    source={require("../../../assets/back.png")}
+                  />
+                </Pressable>
+                <ScrollView>
+                  <Text style={styles.cardModalHeading}>Enter card detail</Text>
+                  <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}
+                  >
+                    <TextInput
+                      style={styles.cardInput}
+                      placeholder="Card Number"
+                      placeholderTextColor="#bbb"
+                      value={cardNumber}
+                      keyboardType="numeric"
+                      onChangeText={(text) => setCardNumber(text)}
+                    />
+                  </KeyboardAvoidingView>
+                </ScrollView>
+                <View style={styles.bottomContainer}>
+                  <Text>Save card as per new RBI Guideline Know more</Text>
+                  <Text>We will verify card with a nominal refundable fee</Text>
+                  <View>
+                    <Pressable
+                      style={styles.modalButton}
+                      onPress={toggleCardModal}
+                    >
+                      <Text style={styles.btnText}>Add card</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </Modal>
           <View style={styles.innerRowWrap}>
             <View style={styles.innerContent}>
               <Image
